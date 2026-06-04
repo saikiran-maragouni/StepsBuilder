@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StepsBuilder — Project Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --border: #1e1e2e;
+    --accent: #7c6aff;
+    --accent2: #ff6a6a;
+    --accent3: #6affb8;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --code-bg: #0d0d14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .grain {
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 60px 32px 120px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 40px;
+    margin-bottom: 60px;
+  }
+
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: var(--accent); }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+    max-width: 540px;
+  }
+
+  .meta {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+
+  .meta-item strong { color: var(--accent3); }
+
+  /* Section */
+  .section {
+    margin-bottom: 64px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 6px;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent3);
+    margin: 28px 0 12px;
+  }
+
+  p {
+    color: #b0b0c0;
+    margin-bottom: 12px;
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+  }
+
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .card p { margin: 0; font-size: 13px; }
+
+  /* Code blocks */
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 4px;
+    padding: 16px 20px;
+    overflow-x: auto;
+    margin: 16px 0;
+    font-size: 12px;
+    line-height: 1.7;
+    color: #a0a0b8;
+  }
+
+  code {
+    color: var(--accent3);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+  }
+
+  pre code { color: #a0a0b8; }
+
+  /* Tags */
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-right: 6px;
+    margin-bottom: 4px;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+  }
+
+  .tag-purple { background: rgba(124,106,255,0.15); color: var(--accent); border: 1px solid rgba(124,106,255,0.3); }
+  .tag-green { background: rgba(106,255,184,0.1); color: var(--accent3); border: 1px solid rgba(106,255,184,0.2); }
+  .tag-red { background: rgba(255,106,106,0.1); color: var(--accent2); border: 1px solid rgba(255,106,106,0.2); }
+
+  /* Table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 12px;
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+    font-weight: 500;
+  }
+
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(30,30,46,0.5);
+    color: #b0b0c0;
+    vertical-align: top;
+  }
+
+  td:first-child { color: var(--accent3); font-weight: 500; }
+
+  tr:hover td { background: rgba(124,106,255,0.03); }
+
+  /* Grid */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* Loop diagram */
+  .loop {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    margin: 20px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px;
+  }
+
+  .loop-step {
+    background: rgba(124,106,255,0.1);
+    border: 1px solid rgba(124,106,255,0.3);
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-size: 11px;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  .loop-arrow {
+    color: var(--muted);
+    padding: 0 8px;
+    font-size: 12px;
+  }
+
+  /* Stack pill */
+  .stack-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 16px 0;
+  }
+
+  .stack-pill {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+
+  .stack-pill span { color: var(--muted); font-size: 10px; display: block; margin-top: 2px; }
+
+  /* Endpoint */
+  .endpoint {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(30,30,46,0.4);
+    font-size: 12px;
+  }
+
+  .method {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 2px;
+    min-width: 44px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .method-post { background: rgba(106,255,184,0.15); color: var(--accent3); }
+  .method-get { background: rgba(124,106,255,0.15); color: var(--accent); }
+  .method-put { background: rgba(255,200,100,0.15); color: #ffc864; }
+  .method-patch { background: rgba(100,180,255,0.15); color: #64b4ff; }
+  .method-delete { background: rgba(255,106,106,0.15); color: var(--accent2); }
+
+  .endpoint-path { color: var(--text); flex: 1; }
+  .endpoint-desc { color: var(--muted); font-size: 11px; }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 48px 0;
+  }
+
+  /* TOC */
+  .toc {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 60px;
+  }
+
+  .toc-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .toc a {
+    display: block;
+    color: #8080a0;
+    text-decoration: none;
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s;
+  }
+
+  .toc a:hover { color: var(--accent); }
+  .toc a::before { content: '→ '; color: var(--accent); }
+
+  /* Prompt box */
+  .prompt-box {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent2);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin: 16px 0;
+    font-size: 12px;
+    color: #a0a0b8;
+    line-height: 1.8;
+  }
+
+  .prompt-label {
+    font-size: 10px;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 80px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="container">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="badge">Project Documentation v1.0</div>
+    <h1>Steps<span>Builder</span></h1>
+    <p class="subtitle">A Personal Goal Operating System — connecting ambitions to daily execution through AI-powered roadmaps, task intelligence, and adaptive reflection.</p>
+    <div class="meta">
+      <div class="meta-item">Stack <strong>MERN + Gemini</strong></div>
+      <div class="meta-item">Type <strong>SaaS Resume Project</strong></div>
+      <div class="meta-item">Target <strong>Product Companies & Startups</strong></div>
+      <div class="meta-item">Cost <strong>₹0 (Free Tier)</strong></div>
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#vision">1. Vision & Core Problem</a>
+    <a href="#loop">2. The Core Loop</a>
+    <a href="#features">3. Feature Areas</a>
+    <a href="#stack">4. Tech Stack</a>
+    <a href="#data">5. Data Models</a>
+    <a href="#screens">6. User Flow (10 Screens)</a>
+    <a href="#endpoints">7. API Endpoints</a>
+    <a href="#ai">8. AI Prompt Structure (5 Moments)</a>
+    <a href="#monetization">9. Monetization</a>
+    <a href="#interview">10. Interview Talking Points</a>
+  </div>
+
+  <!-- 1. Vision -->
+  <div class="section" id="vision">
+    <div class="section-label">01</div>
+    <h2>Vision & Core Problem</h2>
+    <p>Most people have goals but no structured bridge between the big picture and what to do today. Google gives 15 tabs. YouTube gives 3-hour videos. ChatGPT gives a wall of text. None of them give a visual, trackable, adaptive journey.</p>
+    <p>StepsBuilder is a <strong style="color:var(--text)">Personal Goal Operating System</strong> — not a todo app, not a roadmap generator, not a journal. It's the layer that sits between your ambitions and your daily life and connects them intelligently.</p>
+
+    <div class="grid-2" style="margin-top:24px">
+      <div class="card">
+        <div class="card-title">Pain Point 1 — Macro</div>
+        <p>Learning roadmaps are either too vague or scattered across 10 different sources. No single visual, structured, at-a-glance journey.</p>
+      </div>
+      <div class="card">
+        <div class="card-title">Pain Point 2 — Micro</div>
+        <p>Even with a roadmap, you wake up and ask "what do I actually do today?" Gap between big picture and today's action.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 2. Core Loop -->
+  <div class="section" id="loop">
+    <div class="section-label">02</div>
+    <h2>The Core Loop</h2>
+    <p>Every feature in StepsBuilder serves this single loop. Nothing is extra.</p>
+    <div class="loop">
+      <div class="loop-step">Define Goal</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">AI Builds Roadmap</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">Today's Tasks</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">User Executes</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">Daily Reflection</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">AI Interprets</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">Roadmap Adapts</div>
+      <div class="loop-arrow">→</div>
+      <div class="loop-step">Repeat</div>
+    </div>
+    <p style="margin-top:12px">The <strong style="color:var(--accent3)">wow moment</strong>: User writes "spent 3 hours building auth system, skipped DSA, went for a run" — app automatically moves their Backend milestone forward, keeps DSA where it is, AND updates fitness goal progress. All from one free-form paragraph.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 3. Features -->
+  <div class="section" id="features">
+    <div class="section-label">03</div>
+    <h2>Feature Areas</h2>
+
+    <h3>1 — Goal Management</h3>
+    <div class="card">
+      <p>Multiple goals simultaneously. Each goal has a type (career, fitness, business, learning, personal), a deadline or timeframe, and a status (active / paused / completed). Free plan: 3 goals max. Pro: unlimited.</p>
+    </div>
+
+    <h3>2 — AI Roadmap Generation</h3>
+    <div class="card">
+      <p>User describes goal in plain language. Gemini returns structured JSON. Frontend maps JSON into prebuilt React Flow components. AI selects visual type based on goal type. Roadmap is not static — it evolves with user progress.</p>
+      <div style="margin-top:12px">
+        <span class="tag tag-purple">Flowchart → Learning/Skill goals</span>
+        <span class="tag tag-green">Timeline → Deadline-driven goals</span>
+        <span class="tag tag-red">Kanban → Project-style goals</span>
+      </div>
+    </div>
+
+    <h3>3 — Daily Task Layer</h3>
+    <div class="card">
+      <p>AI looks at all active goals and current roadmap positions. Suggests a prioritized task list for today. Tasks tagged to which goal and which roadmap step. User can accept, modify, or ignore. Manual tasks ask "which goal does this relate to?" — maintaining connection.</p>
+    </div>
+
+    <h3>4 — Daily Reflection (Journal)</h3>
+    <div class="card">
+      <p>User writes freely what they did. AI maps activities to goals and roadmap steps. Roadmap updates based on interpretation. User can confirm or correct AI's reading — this feedback loop keeps data accurate and improves prompt quality over time.</p>
+    </div>
+
+    <h3>5 — AI Adaptation Engine</h3>
+    <div class="card">
+      <p>The heartbeat of the product. Watches pace over time. Stuck on a step too long → suggests breaking it down. Moving fast → accelerates roadmap. Consistently skipping certain tasks → notices and asks why. Everything else feeds data into this engine.</p>
+    </div>
+
+    <h3>6 — Progress & Insights</h3>
+    <div class="card">
+      <p>Visual progress on each goal's roadmap. Streak tracking per goal. Momentum score (accelerating or slowing down). Weekly AI summary — what you actually did vs what was planned.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 4. Stack -->
+  <div class="section" id="stack">
+    <div class="section-label">04</div>
+    <h2>Tech Stack</h2>
+    <div class="stack-grid">
+      <div class="stack-pill">React + Tailwind <span>Frontend UI</span></div>
+      <div class="stack-pill">React Flow <span>Roadmap Visualization</span></div>
+      <div class="stack-pill">Node + Express <span>Backend API</span></div>
+      <div class="stack-pill">MongoDB Atlas <span>Database (free M0)</span></div>
+      <div class="stack-pill">Redis <span>AI response cache (Railway)</span></div>
+      <div class="stack-pill">Gemini 1.5 Flash <span>AI (free tier)</span></div>
+      <div class="stack-pill">JWT <span>Authentication</span></div>
+      <div class="stack-pill">Razorpay <span>Payments</span></div>
+      <div class="stack-pill">Vercel <span>Frontend deploy</span></div>
+      <div class="stack-pill">Render <span>Backend deploy</span></div>
+    </div>
+    <p style="margin-top:8px;font-size:12px;color:var(--muted)">Total monthly cost: ₹0 on free tiers. Redis caches AI responses so repeated roadmap views don't make redundant API calls.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 5. Data Models -->
+  <div class="section" id="data">
+    <div class="section-label">05</div>
+    <h2>Data Models</h2>
+
+    <pre><code>User
+├── name, email, password (bcrypt)
+├── plan: 'free' | 'pro'
+├── razorpaySubscriptionId
+└── checkInPreference: 'morning' | 'evening'
+
+Goal
+├── userId (ref: User)
+├── title, category, timeframe, deadline
+├── status: 'active' | 'paused' | 'completed'
+└── momentumScore: Number (AI updated)
+
+Roadmap (one per Goal)
+├── goalId (ref: Goal)
+├── visualType: 'flowchart' | 'timeline' | 'kanban'
+└── phases: [{ title, steps: [{ title, description, status, estimatedDays }] }]
+
+Task
+├── userId (ref: User)
+├── goalId (ref: Goal)        ← goal connection
+├── stepId (ref: Step)        ← roadmap connection
+├── title, priority: 'high'|'medium'|'low'
+├── dueDate, status: 'pending'|'completed'|'skipped'
+└── isAiGenerated: Boolean
+
+JournalEntry
+├── userId (ref: User)
+├── date, rawText (user's free-form input)
+└── aiInterpretation: {
+      goalMappings: [{ goalId, stepId, progressPercent }],
+      untrackedActivities: [],
+      productivityLevel: 'low'|'medium'|'high'
+    }
+
+Nudge (AI generated only, never user created)
+├── userId, goalId
+├── type: 'warning' | 'suggestion' | 'encouragement'
+├── message, isRead, isDismissed
+└── optionalStepBreakdown: []</code></pre>
+
+    <p style="font-size:12px;color:var(--muted)">Key design decision: JournalEntry is the only entity where raw user input gets transformed by AI into structured data. AI interpretation happens in one place — cleaner to build, easier to debug, easier to explain.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 6. User Flow -->
+  <div class="section" id="screens">
+    <div class="section-label">06</div>
+    <h2>User Flow — 10 Screens</h2>
+
+    <table>
+      <tr><th>#</th><th>Screen</th><th>Purpose</th></tr>
+      <tr><td>1</td><td>Landing Page</td><td>Value prop + Sign Up / Login CTAs. Nothing else.</td></tr>
+      <tr><td>2</td><td>Auth (Signup/Login)</td><td>JWT auth. First time → Onboarding. Returning → Dashboard.</td></tr>
+      <tr><td>3</td><td>Onboarding</td><td>3 questions: primary goal, hours/day, check-in preference. Creates first goal before dashboard loads.</td></tr>
+      <tr><td>4</td><td>Dashboard (Home)</td><td>Today's Tasks + Active Goal Cards + Quick Journal + Nudges. Answers "what do I do today?" instantly.</td></tr>
+      <tr><td>5</td><td>Create Goal</td><td>Title, category, timeframe, context → Gemini generates roadmap JSON → wow moment render.</td></tr>
+      <tr><td>6</td><td>Goal Detail / Roadmap</td><td>Full roadmap visual, current position highlighted, steps clickable, momentum trend graph.</td></tr>
+      <tr><td>7</td><td>Task View (Day Organizer)</td><td>All tasks across all goals for today. Color coded by goal. Complete / Skip buttons.</td></tr>
+      <tr><td>8</td><td>Journal / Reflection</td><td>Free text entry → AI interprets → shows mapping summary → user confirms or corrects.</td></tr>
+      <tr><td>9</td><td>Progress / Insights</td><td>Weekly view: tasks completed vs planned, streak, momentum trend, AI weekly summary.</td></tr>
+      <tr><td>10</td><td>Settings / Plan</td><td>Profile settings + upgrade prompt showing free vs pro clearly.</td></tr>
+    </table>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 7. Endpoints -->
+  <div class="section" id="endpoints">
+    <div class="section-label">07</div>
+    <h2>API Endpoints — 35 Total</h2>
+
+    <h3>Auth — /api/auth</h3>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/auth/register</div><div class="endpoint-desc">Create account</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/auth/login</div><div class="endpoint-desc">Login, return JWT</div></div></div>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/auth/me</div><div class="endpoint-desc">Get logged in user profile</div></div></div>
+    <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/auth/me</div><div class="endpoint-desc">Update profile</div></div></div>
+
+    <h3>Goals — /api/goals</h3>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/goals</div><div class="endpoint-desc">Get all goals for logged in user</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/goals</div><div class="endpoint-desc">Create new goal → triggers AI roadmap generation</div></div></div>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/goals/:id</div><div class="endpoint-desc">Get single goal with its roadmap</div></div></div>
+    <div class="endpoint"><span class="method method-put">PUT</span><div><div class="endpoint-path">/api/goals/:id</div><div class="endpoint-desc">Update goal title, timeframe, status</div></div></div>
+    <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/goals/:id</div><div class="endpoint-desc">Delete goal</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/goals/:id/status</div><div class="endpoint-desc">Pause / reactivate / complete a goal</div></div></div>
+
+    <h3>Roadmap — /api/goals/:goalId/roadmap</h3>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/goals/:goalId/roadmap</div><div class="endpoint-desc">Get full roadmap for a goal</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/goals/:goalId/roadmap/regenerate</div><div class="endpoint-desc">Ask AI to regenerate roadmap</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/goals/:goalId/roadmap/steps/:stepId</div><div class="endpoint-desc">Update a single step status</div></div></div>
+
+    <h3>Tasks — /api/tasks</h3>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/tasks</div><div class="endpoint-desc">Get all tasks (filter by date, goal, status)</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/tasks</div><div class="endpoint-desc">Create manual task</div></div></div>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/tasks/today</div><div class="endpoint-desc">Get today's tasks across all goals</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/tasks/generate</div><div class="endpoint-desc">AI generates today's tasks from roadmap position</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/tasks/:id</div><div class="endpoint-desc">Update task title or priority</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/tasks/:id/complete</div><div class="endpoint-desc">Mark complete → triggers roadmap step check ⚡</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/tasks/:id/skip</div><div class="endpoint-desc">Mark task skipped</div></div></div>
+    <div class="endpoint"><span class="method method-delete">DELETE</span><div><div class="endpoint-path">/api/tasks/:id</div><div class="endpoint-desc">Delete task</div></div></div>
+
+    <h3>Journal — /api/journal</h3>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/journal</div><div class="endpoint-desc">Get all journal entries for user</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/journal</div><div class="endpoint-desc">Submit entry → triggers AI interpretation ⚡</div></div></div>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/journal/:id</div><div class="endpoint-desc">Get single entry with AI interpretation</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/journal/:id/confirm</div><div class="endpoint-desc">User confirms AI's interpretation</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/journal/:id/correct</div><div class="endpoint-desc">User corrects AI's interpretation → stored for prompt improvement</div></div></div>
+
+    <h3>Nudges — /api/nudges</h3>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/nudges</div><div class="endpoint-desc">Get all unread nudges for user</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/nudges/:id/read</div><div class="endpoint-desc">Mark nudge as read</div></div></div>
+    <div class="endpoint"><span class="method method-patch">PATCH</span><div><div class="endpoint-path">/api/nudges/:id/dismiss</div><div class="endpoint-desc">Dismiss nudge</div></div></div>
+
+    <h3>Insights — /api/insights</h3>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/insights/weekly</div><div class="endpoint-desc">Weekly summary across all goals</div></div></div>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/insights/goal/:id</div><div class="endpoint-desc">Momentum and progress data for one goal</div></div></div>
+
+    <h3>Payments — /api/payments</h3>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/payments/create-order</div><div class="endpoint-desc">Create Razorpay order</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/payments/verify</div><div class="endpoint-desc">Verify payment signature</div></div></div>
+    <div class="endpoint"><span class="method method-get">GET</span><div><div class="endpoint-path">/api/payments/subscription</div><div class="endpoint-desc">Get current subscription status</div></div></div>
+    <div class="endpoint"><span class="method method-post">POST</span><div><div class="endpoint-path">/api/payments/cancel</div><div class="endpoint-desc">Cancel subscription</div></div></div>
+
+    <p style="margin-top:16px;font-size:12px;color:var(--muted)">⚡ marks the 5-6 endpoints with interesting logic — these are your interview conversation endpoints.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 8. AI Prompts -->
+  <div class="section" id="ai">
+    <div class="section-label">08</div>
+    <h2>AI Prompt Structure — 5 Moments</h2>
+    <p style="margin-bottom:24px">Three rules apply to all prompts: (1) Always return pure JSON only. (2) Always define the exact JSON structure in the prompt. (3) Always include explicit constraints.</p>
+
+    <h3>Moment 1 — Roadmap Generation</h3>
+    <div class="prompt-box">
+      <div class="prompt-label">Input to Gemini</div>
+      Goal: "{userGoal}" | Category: {category} | Timeframe: {timeframe}<br>
+      Context: "{userContext}" | Hours/day available: {hours}<br><br>
+      Return pure JSON only. No markdown. Structure:<br>
+      { visualType: 'flowchart'|'timeline'|'kanban', reason: string,<br>
+      &nbsp;&nbsp;phases: [{ title, steps: [{ title, description, estimatedDays }] }] }<br><br>
+      Pick visualType: flowchart=learning/skill, timeline=deadline-driven, kanban=project-style.<br>
+      Max 5 phases, 6 steps each. Total must fit within timeframe.
+    </div>
+
+    <h3>Moment 2 — Daily Task Generation</h3>
+    <div class="prompt-box">
+      <div class="prompt-label">Input to Gemini</div>
+      Active goals: {goalTitles + currentStep per goal}<br>
+      Hours available today: {hours} | Day: {dayOfWeek}<br>
+      Yesterday's completed tasks: {array} | Momentum scores: {perGoal}<br><br>
+      Return 3-5 tasks max. Each: { title, goalId, stepId, priority, estimatedMinutes }<br>
+      Prioritize goals with lower momentum. Fit within available hours.<br>
+      Do NOT generate more tasks than user can realistically complete. An achievable list beats a complete list.
+    </div>
+
+    <h3>Moment 3 — Journal Interpretation</h3>
+    <div class="prompt-box">
+      <div class="prompt-label">Input to Gemini</div>
+      Journal entry: "{rawUserText}"<br>
+      Active goals: {array with titles and current steps}<br><br>
+      Return: { goalMappings: [{ goalId, stepId, progressPercent, activitiesMapped }],<br>
+      &nbsp;&nbsp;untrackedActivities: [], productivityLevel: 'low'|'medium'|'high' }<br><br>
+      Be conservative with progress percentages. A single day rarely moves a step more than 10-15%.<br>
+      Overestimating progress destroys long-term motivation.
+    </div>
+
+    <h3>Moment 4 — Adaptation / Nudge Generation</h3>
+    <div class="prompt-box">
+      <div class="prompt-label">Input to Gemini</div>
+      Goal: "{title}" | Current step: "{stepTitle}"<br>
+      Days on this step: {n} | Estimated days: {estimated}<br>
+      This week's journal entries: {array} | Momentum score: {score} (trend: {up|down})<br>
+      Last nudge sent: {daysAgo} days ago<br><br>
+      Return: { shouldNudge: boolean, type: 'warning'|'suggestion'|'encouragement',<br>
+      &nbsp;&nbsp;message: string (max 2 sentences), suggestBreakdown: boolean,<br>
+      &nbsp;&nbsp;newSteps: [] }<br><br>
+      Do not nudge if last nudge was under 3 days ago. Sound like a supportive friend, not a productivity app.
+    </div>
+
+    <h3>Moment 5 — Weekly Insights</h3>
+    <div class="prompt-box">
+      <div class="prompt-label">Input to Gemini</div>
+      Week's completed tasks per goal: {array}<br>
+      Journal entries this week: {array}<br>
+      Momentum start vs end: {perGoal} | Goals with zero activity: {array}<br><br>
+      Return: { summary: string (3-4 sentences max),<br>
+      &nbsp;&nbsp;perGoal: [{ goalId, status: 'on-track'|'needs-attention'|'great-progress' }],<br>
+      &nbsp;&nbsp;nextWeekSuggestion: string }<br>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 9. Monetization -->
+  <div class="section" id="monetization">
+    <div class="section-label">09</div>
+    <h2>Monetization</h2>
+    <p>Build Razorpay integration at the end, after core product is complete. Design the User model with a <code>plan</code> field from day one so adding payments is a clean addition, not a retrofit.</p>
+
+    <div class="grid-2" style="margin-top:20px">
+      <div class="card">
+        <div class="card-title">Free Tier</div>
+        <p>3 goals max. Basic AI task suggestions. Basic journal. Basic roadmap. Core loop fully functional.</p>
+      </div>
+      <div class="card">
+        <div class="card-title" style="color:var(--accent)">Pro Tier</div>
+        <p>Unlimited goals. Full AI adaptation engine. Detailed weekly insights. Roadmap customization. Priority task intelligence.</p>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--muted);margin-top:12px">The AI intelligence layer is what's monetized — not just a goal count limit. This is a deliberate product decision: free gets the structure, pro gets the brain.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- 10. Interview Points -->
+  <div class="section" id="interview">
+    <div class="section-label">10</div>
+    <h2>Interview Talking Points</h2>
+
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">On Architecture</div>
+      <p>"I separated content generation from presentation. Gemini returns structured JSON and the frontend maps it into prebuilt React Flow components. Keeps AI costs low, rendering fast, and UI consistent."</p>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">On the Task-Roadmap Connection</div>
+      <p>"The roadmap and daily tasks aren't separate features — completing daily tasks is literally how you move through the roadmap. And the AI watches your pace and nudges you if you're stuck."</p>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">On Prompt Engineering</div>
+      <p>"I spent significant time prompt engineering to get consistent, structured, intelligent responses. Every prompt has explicit constraints — things like 'don't estimate more than 15% progress per day' — because the constraints are what make AI feel calibrated, not random."</p>
+    </div>
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-title">On Monetization</div>
+      <p>"I designed the free and pro tiers around the AI features intentionally. Basic structure is free, but the intelligence layer is monetized. That came from thinking about where the actual value lives in the product."</p>
+    </div>
+    <div class="card">
+      <div class="card-title">On Performance</div>
+      <p>"I used Redis to cache AI-generated roadmaps so repeated views don't make redundant API calls — keeps the app fast and stays within free tier limits."</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>StepsBuilder — Full Design Documentation</span>
+    <span>Designed with Claude · Built for Product Companies</span>
+  </div>
+
+</div>
+</body>
+</html>
