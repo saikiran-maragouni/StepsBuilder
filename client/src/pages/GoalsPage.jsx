@@ -5,7 +5,7 @@ import { useToast } from '../context/ToastContext';
 import Sidebar from '../components/Sidebar';
 import { Plus, Target, Pause, Play, Trash2, TrendingUp, Clock, ChevronRight, Search, Filter } from 'lucide-react';
 
-const categoryColors = { learning: '#6366f1', career: '#8b5cf6', fitness: '#10b981', business: '#f59e0b', personal: '#06b6d4' };
+const categoryColors = { learning: '#3b82f6', career: '#6366f1', fitness: '#10b981', business: '#f59e0b', personal: '#06b6d4' };
 
 export default function GoalsPage() {
   const toast = useToast();
@@ -60,20 +60,22 @@ export default function GoalsPage() {
         </div>
 
         {/* Search + Filter */}
-        <div style={{ display: 'flex', gap: 12, marginBottom: 24 }}>
-          <div style={{ flex: 1, position: 'relative' }}>
+        <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
+          <div style={{ flex: 1, position: 'relative', minWidth: 200 }}>
             <Search size={16} style={{ position: 'absolute', left: 14, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input className="input" style={{ paddingLeft: 40 }} placeholder="Search goals..." value={search} onChange={(e) => setSearch(e.target.value)} />
           </div>
-          <div style={{ display: 'flex', background: 'var(--glass-bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-            {['active', 'paused', 'completed', 'all'].map((s) => (
-              <button key={s} onClick={() => setFilter(s)}
-                style={{ padding: '0 16px', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600, transition: 'var(--transition)',
-                  background: filter === s ? 'var(--gradient)' : 'transparent',
-                  color: filter === s ? 'white' : 'var(--text-muted)' }}>
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-              </button>
-            ))}
+          <div className="filter-tabs-container" style={{ flexShrink: 0, maxWidth: '100%' }}>
+            <div style={{ display: 'flex', background: 'var(--glass-bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: 4, minWidth: 'max-content' }}>
+              {['active', 'paused', 'completed', 'all'].map((s) => (
+                <button key={s} onClick={() => setFilter(s)}
+                  style={{ padding: '7px 16px', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600, transition: 'var(--transition)', borderRadius: 'calc(var(--radius-md) - 2px)',
+                    background: filter === s ? 'var(--gradient)' : 'transparent',
+                    color: filter === s ? 'white' : 'var(--text-muted)' }}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -89,20 +91,20 @@ export default function GoalsPage() {
             {filtered.map((goal) => {
               const color = categoryColors[goal.category] || '#6366f1';
               return (
-                <div key={goal._id} className="card" style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20 }}>
-                  {/* Category bar */}
-                  <div style={{ width: 4, height: 56, borderRadius: 'var(--radius-full)', background: color, flexShrink: 0 }} />
+                <div key={goal._id} className="card" style={{ padding: '20px 24px', display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
+                  {/* Category bar (hidden on very small screens to save space) */}
+                  <div className="hide-xs" style={{ width: 4, height: 56, borderRadius: 'var(--radius-full)', background: color, flexShrink: 0 }} />
 
                   {/* Info */}
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6 }}>
+                  <div style={{ flex: '1 1 200px', minWidth: 0 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
                       <Link to={`/goals/${goal._id}`} style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', textDecoration: 'none' }}
-                        className="hover:text-indigo">{goal.title}</Link>
+                        className="hover:text-blue">{goal.title}</Link>
                       <span className={`badge badge-${goal.status === 'active' ? 'success' : goal.status === 'paused' ? 'warning' : 'muted'}`}>
                         {goal.status}
                       </span>
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px 16px', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: 12, color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: 4 }}>
                         <Clock size={12} /> {goal.timeframe || 'No timeframe'}
                       </span>

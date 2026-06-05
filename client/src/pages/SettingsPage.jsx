@@ -42,7 +42,7 @@ export default function SettingsPage() {
           {/* Profile */}
           <div className="card" style={{ padding: 28 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
-              <User size={18} color="var(--indigo)" />
+              <User size={18} color="var(--blue)" />
               <h3 style={{ fontSize: 16, fontWeight: 700 }}>Profile</h3>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24, padding: '16px 20px', background: 'var(--glass-bg)', borderRadius: 'var(--radius-md)', border: '1px solid var(--border)' }}>
@@ -52,7 +52,7 @@ export default function SettingsPage() {
               <div>
                 <div style={{ fontSize: 16, fontWeight: 700 }}>{user?.name}</div>
                 <div style={{ fontSize: 13, color: 'var(--text-muted)' }}>{user?.email}</div>
-                <div style={{ fontSize: 11, color: 'var(--indigo)', fontWeight: 600, marginTop: 2 }}>
+                <div style={{ fontSize: 11, color: 'var(--blue)', fontWeight: 600, marginTop: 2 }}>
                   {user?.plan === 'pro' ? '✦ Pro Plan' : 'Free Plan'}
                 </div>
               </div>
@@ -80,7 +80,7 @@ export default function SettingsPage() {
           {/* Account info */}
           <div className="card" style={{ padding: 28 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 16 }}>
-              <Shield size={18} color="var(--indigo)" />
+              <Shield size={18} color="var(--blue)" />
               <h3 style={{ fontSize: 16, fontWeight: 700 }}>Account</h3>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

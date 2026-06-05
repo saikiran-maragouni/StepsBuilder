@@ -366,7 +366,7 @@ export default function GoalDetailPage() {
         </div>
 
         {/* ── Stats row ── */}
-        <div className="grid-4" style={{ marginBottom: 28 }}>
+        <div className="grid-4" style={{ marginBottom: 28, gap: 12 }}>
           {[
             { label: 'Momentum', value: `${goal?.momentumScore || 0}/100`, icon: TrendingUp, color: 'var(--warning)' },
             { label: 'Phases', value: roadmap?.phases?.length || 0, icon: Layers, color: 'var(--indigo)' },
@@ -386,7 +386,7 @@ export default function GoalDetailPage() {
         </div>
 
         {/* ── Toolbar: View Toggle + Regenerate ── */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, gap: 12, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, gap: 12, flexWrap: 'wrap', rowGap: 10 }}>
           <h2 style={{ fontSize: 18, fontWeight: 700 }}>Roadmap</h2>
           <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
             {/* View toggle */}

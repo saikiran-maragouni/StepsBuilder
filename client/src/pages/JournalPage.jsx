@@ -92,7 +92,7 @@ function EntryCard({ entry, onConfirm, onUpdate }) {
           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           border: `1px solid ${editable ? 'rgba(99,102,241,0.2)' : 'var(--border)'}`,
         }}>
-          {editable ? <BookOpen size={20} color="var(--indigo)" /> : <Lock size={18} color="var(--text-muted)" />}
+          {editable ? <BookOpen size={20} color="var(--blue)" /> : <Lock size={18} color="var(--text-muted)" />}
         </div>
 
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -104,7 +104,7 @@ function EntryCard({ entry, onConfirm, onUpdate }) {
 
             {/* Today badge */}
             {isToday(entry.date) && (
-              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--indigo)', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: 'var(--radius-full)', padding: '2px 8px' }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--blue)', background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)', borderRadius: 'var(--radius-full)', padding: '2px 8px' }}>
                 Today
               </span>
             )}
@@ -370,7 +370,7 @@ export default function JournalPage() {
             />
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: 12, color: charCount > 50 ? 'var(--indigo)' : 'var(--text-muted)' }}>
+              <span style={{ fontSize: 12, color: charCount > 50 ? 'var(--blue)' : 'var(--text-muted)' }}>
                 {charCount} chars {charCount > 50 ? '· AI will interpret this' : '· Keep writing…'}
               </span>
               <button
@@ -388,7 +388,7 @@ export default function JournalPage() {
 
             {submitting && (
               <div style={{ marginTop: 16, padding: '12px 16px', background: 'rgba(99,102,241,0.08)', border: '1px solid rgba(99,102,241,0.2)', borderRadius: 'var(--radius-md)', fontSize: 13, color: 'var(--text-secondary)', display: 'flex', alignItems: 'center', gap: 10 }}>
-                <Sparkles size={16} color="var(--indigo)" />
+                <Sparkles size={16} color="var(--blue)" />
                 Gemini is reading your entry and mapping activities to your goals…
               </div>
             )}
@@ -402,9 +402,9 @@ export default function JournalPage() {
             background: 'rgba(99,102,241,0.06)', border: '1px solid rgba(99,102,241,0.15)',
             borderRadius: 'var(--radius-md)', marginBottom: 20, fontSize: 13,
           }}>
-            <Pencil size={14} color="var(--indigo)" />
+            <Pencil size={14} color="var(--blue)" />
             <span style={{ color: 'var(--text-secondary)', flex: 1 }}>
-              You've already written today's entry. You can <strong style={{ color: 'var(--indigo)' }}>edit it</strong> using the ✏️ pencil icon below — or confirm it to apply progress to your roadmap.
+              You've already written today's entry. You can <strong style={{ color: 'var(--blue)' }}>edit it</strong> using the ✏️ pencil icon below — or confirm it to apply progress to your roadmap.
             </span>
           </div>
         )}

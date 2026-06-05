@@ -83,7 +83,7 @@ export default function TasksPage() {
             <h1 className="topbar-title">Tasks</h1>
             <p className="topbar-sub">{pending.length} pending · {completed.length} completed today</p>
           </div>
-          <div style={{ display: 'flex', gap: 10 }}>
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <button className="btn btn-ghost btn-sm" onClick={() => setShowAdd(!showAdd)}><Plus size={15} /> Add Task</button>
             <button className="btn btn-primary btn-sm" onClick={generateTasks} disabled={generating}>
               {generating ? <span className="spinner" style={{ width: 14, height: 14 }} /> : <Zap size={15} />}
@@ -92,35 +92,41 @@ export default function TasksPage() {
           </div>
         </div>
 
-        {/* Filter tabs */}
-        <div style={{ display: 'flex', gap: 4, marginBottom: 24, background: 'var(--glass-bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: 4, width: 'fit-content' }}>
-          {[['today', 'Today'], ['pending', 'Pending'], ['completed', 'Done'], ['skipped', 'Skipped']].map(([val, label]) => (
-            <button key={val} onClick={() => setFilter(val)}
-              style={{ padding: '7px 16px', borderRadius: 'calc(var(--radius-md) - 2px)', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600, transition: 'var(--transition)',
-                background: filter === val ? 'var(--gradient)' : 'transparent',
-                color: filter === val ? 'white' : 'var(--text-muted)' }}>
-              {label}
-            </button>
-          ))}
+        {/* Filter tabs — scrollable on mobile */}
+        <div className="filter-tabs-container" style={{ marginBottom: 24 }}>
+          <div style={{ display: 'flex', gap: 4, background: 'var(--glass-bg)', border: '1px solid var(--border)', borderRadius: 'var(--radius-md)', padding: 4, width: 'fit-content', minWidth: 'max-content' }}>
+            {[['today', 'Today'], ['pending', 'Pending'], ['completed', 'Done'], ['skipped', 'Skipped']].map(([val, label]) => (
+              <button key={val} onClick={() => setFilter(val)}
+                style={{ padding: '7px 16px', borderRadius: 'calc(var(--radius-md) - 2px)', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600, transition: 'var(--transition)',
+                  background: filter === val ? 'var(--gradient)' : 'transparent',
+                  color: filter === val ? 'white' : 'var(--text-muted)', whiteSpace: 'nowrap' }}>
+                {label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Add task panel */}
         {showAdd && (
           <div className="card" style={{ padding: 20, marginBottom: 20 }}>
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <input className="input" placeholder="Task title..." style={{ flex: 2, minWidth: 200 }} value={newTask.title} onChange={(e) => setNewTask(p => ({ ...p, title: e.target.value }))} />
-              <select className="input" style={{ flex: 1, minWidth: 140 }} value={newTask.goalId} onChange={(e) => setNewTask(p => ({ ...p, goalId: e.target.value }))}>
-                <option value="">Select goal...</option>
-                {goals.filter(g => g.status === 'active').map((g) => <option key={g._id} value={g._id}>{g.title}</option>)}
-              </select>
-              <select className="input" style={{ width: 120 }} value={newTask.priority} onChange={(e) => setNewTask(p => ({ ...p, priority: e.target.value }))}>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-              </select>
-              <input type="number" className="input" style={{ width: 100 }} placeholder="Minutes" value={newTask.estimatedMinutes} onChange={(e) => setNewTask(p => ({ ...p, estimatedMinutes: +e.target.value }))} />
-              <button className="btn btn-primary btn-sm" onClick={createTask}>Add</button>
-              <button className="btn btn-ghost btn-icon" onClick={() => setShowAdd(false)}><X size={15} /></button>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <input className="input" placeholder="Task title..." value={newTask.title} onChange={(e) => setNewTask(p => ({ ...p, title: e.target.value }))} />
+              <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+                <select className="input" style={{ flex: 2, minWidth: 140 }} value={newTask.goalId} onChange={(e) => setNewTask(p => ({ ...p, goalId: e.target.value }))}>
+                  <option value="">Select goal...</option>
+                  {goals.filter(g => g.status === 'active').map((g) => <option key={g._id} value={g._id}>{g.title}</option>)}
+                </select>
+                <select className="input" style={{ flex: 1, minWidth: 110 }} value={newTask.priority} onChange={(e) => setNewTask(p => ({ ...p, priority: e.target.value }))}>
+                  <option value="high">High</option>
+                  <option value="medium">Medium</option>
+                  <option value="low">Low</option>
+                </select>
+                <input type="number" className="input" style={{ width: 100 }} placeholder="Minutes" value={newTask.estimatedMinutes} onChange={(e) => setNewTask(p => ({ ...p, estimatedMinutes: +e.target.value }))} />
+              </div>
+              <div style={{ display: 'flex', gap: 8 }}>
+                <button className="btn btn-primary btn-sm" onClick={createTask} style={{ flex: 1, justifyContent: 'center' }}>Add Task</button>
+                <button className="btn btn-ghost btn-icon" onClick={() => setShowAdd(false)}><X size={15} /></button>
+              </div>
             </div>
           </div>
         )}

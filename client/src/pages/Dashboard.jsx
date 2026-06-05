@@ -115,20 +115,21 @@ export default function Dashboard() {
         {/* Stats row */}
         <div className="grid-4" style={{ marginBottom: 28 }}>
           {[
-            { label: 'Active Goals', value: goals.filter(g => g.status === 'active').length, icon: Target, color: 'var(--indigo)' },
+            { label: 'Active Goals', value: goals.filter(g => g.status === 'active').length, icon: Target, color: 'var(--blue)' },
             { label: 'Tasks Today', value: `${completedCount}/${todayTasks.length}`, icon: CheckCircle, color: 'var(--success)' },
             { label: 'Avg Momentum', value: avgMomentum, icon: Flame, color: 'var(--warning)' },
             { label: 'Pending Tasks', value: pendingCount, icon: Clock, color: 'var(--cyan)' },
           ].map(({ label, value, icon: Icon, color }) => (
             <div key={label} className="card stat-card" style={{ padding: '20px 22px' }}>
               <div className="stat-icon" style={{ background: `${color}1a`, color }}><Icon size={20} /></div>
-              <div className="stat-value" style={{ color }}>{value}</div>
+              <div className="stat-value" style={{ color, fontSize: 36 }}>{value}</div>
               <div className="stat-label">{label}</div>
             </div>
           ))}
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: 24 }}>
+        {/* Two-column layout — responsive */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: 24 }}>
           {/* Today's tasks */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
@@ -162,7 +163,7 @@ export default function Dashboard() {
             )}
           </div>
 
-          {/* Active goals sidebar */}
+          {/* Active goals */}
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
               <h2 style={{ fontSize: 18, fontWeight: 700 }}>Active Goals</h2>
