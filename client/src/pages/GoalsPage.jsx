@@ -1,19 +1,27 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import Sidebar from '../components/Sidebar';
-import { Plus, Target, Pause, Play, Trash2, TrendingUp, Clock, ChevronRight, Search, Filter } from 'lucide-react';
+import UpgradeModal from '../components/UpgradeModal';
+import { Plus, Target, Pause, Play, Trash2, TrendingUp, Clock, ChevronRight, Search, Crown, Zap } from 'lucide-react';
 
 const categoryColors = { learning: '#3b82f6', career: '#6366f1', fitness: '#10b981', business: '#f59e0b', personal: '#06b6d4' };
 
 export default function GoalsPage() {
+  const { user } = useAuth();
   const toast = useToast();
   const [goals, setGoals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState('active');
   const [deleting, setDeleting] = useState(null);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
+  const isPro = user?.plan === 'pro';
+  const activeGoalCount = goals.filter(g => g.status === 'active').length;
+  const atFreeLimit = !isPro && activeGoalCount >= 3;
 
   useEffect(() => {
     api.get('/goals').then(({ data }) => setGoals(data.goals || [])).catch(() => toast.error('Failed to load goals.')).finally(() => setLoading(false));
@@ -56,8 +64,29 @@ export default function GoalsPage() {
             <h1 className="topbar-title">My Goals</h1>
             <p className="topbar-sub">{goals.filter(g => g.status === 'active').length} active · {goals.length} total</p>
           </div>
-          <Link to="/goals/new" className="btn btn-primary"><Plus size={16} /> New Goal</Link>
+          {atFreeLimit ? (
+            <button onClick={() => setShowUpgrade(true)} className="btn btn-primary">
+              <Crown size={15} /> Upgrade for More
+            </button>
+          ) : (
+            <Link to="/goals/new" className="btn btn-primary"><Plus size={16} /> New Goal</Link>
+          )}
         </div>
+
+        {/* Free plan limit banner */}
+        {atFreeLimit && (
+          <div style={{ marginBottom: 20, padding: '14px 18px', background: 'var(--gradient-soft)', border: '1px solid rgba(59,130,246,0.3)', borderRadius: 'var(--radius-lg)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <Crown size={16} color="var(--blue)" />
+              <span style={{ fontSize: 14, color: 'var(--text-primary)', fontWeight: 500 }}>
+                You've reached the <strong>3 goal limit</strong> on the Free plan.
+              </span>
+            </div>
+            <button onClick={() => setShowUpgrade(true)} className="btn btn-primary btn-sm">
+              <Zap size={13} /> Upgrade to Pro
+            </button>
+          </div>
+        )}
 
         {/* Search + Filter */}
         <div style={{ display: 'flex', gap: 12, marginBottom: 24, flexWrap: 'wrap' }}>
@@ -137,6 +166,8 @@ export default function GoalsPage() {
           </div>
         )}
       </main>
+
+      {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
     </div>
   );
 }

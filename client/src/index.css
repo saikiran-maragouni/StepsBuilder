@@ -583,6 +583,17 @@ select.input option { background: var(--bg-elevated); color: var(--text-primary)
   animation: spin 0.7s linear infinite;
 }
 @keyframes spin { to { transform: rotate(360deg); } }
+/* Inline icon spin (used in buttons) */
+.spin { animation: spin 0.7s linear infinite; }
+/* Pro badge */
+.badge-pro {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--gradient);
+  color: white; font-size: 10px; font-weight: 700;
+  padding: 3px 8px; border-radius: var(--radius-full);
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+
 .loading-screen {
   min-height: 100vh;
   display: flex;

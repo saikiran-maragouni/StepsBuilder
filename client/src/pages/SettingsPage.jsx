@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import Sidebar from '../components/Sidebar';
+import UpgradeModal from '../components/UpgradeModal';
 import api from '../utils/api';
-import { User, Moon, Bell, Shield, LogOut, Save } from 'lucide-react';
+import { User, Bell, Shield, LogOut, Save, Crown, Zap } from 'lucide-react';
 
 export default function SettingsPage() {
   const { user, logout, updateUser } = useAuth();
@@ -14,6 +15,7 @@ export default function SettingsPage() {
     checkInPreference: user?.checkInPreference || 'evening',
   });
   const [saving, setSaving] = useState(false);
+  const [showUpgrade, setShowUpgrade] = useState(false);
 
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.type === 'number' ? +e.target.value : e.target.value }));
 
@@ -39,6 +41,29 @@ export default function SettingsPage() {
         </div>
 
         <div style={{ maxWidth: 560, display: 'flex', flexDirection: 'column', gap: 24 }}>
+
+          {/* Plan Card */}
+          <div className="card" style={{ padding: 28, background: user?.plan === 'pro' ? 'var(--gradient-soft)' : undefined, border: user?.plan === 'pro' ? '1px solid rgba(59,130,246,0.3)' : undefined }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <Crown size={18} color={user?.plan === 'pro' ? 'var(--blue)' : 'var(--text-muted)'} />
+                <div>
+                  <div style={{ fontSize: 15, fontWeight: 700 }}>Your Plan</div>
+                  <div style={{ fontSize: 13, color: 'var(--text-muted)', marginTop: 2 }}>
+                    {user?.plan === 'pro' ? 'You have access to all Pro features' : 'Upgrade to unlock unlimited goals & AI features'}
+                  </div>
+                </div>
+              </div>
+              {user?.plan === 'pro' ? (
+                <span className="badge-pro"><Crown size={10} /> Pro</span>
+              ) : (
+                <button onClick={() => setShowUpgrade(true)} className="btn btn-primary btn-sm">
+                  <Zap size={14} /> Upgrade to Pro
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Profile */}
           <div className="card" style={{ padding: 28 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 22 }}>
@@ -109,6 +134,9 @@ export default function SettingsPage() {
           </div>
         </div>
       </main>
+
+      {/* Upgrade modal */}
+      {showUpgrade && <UpgradeModal onClose={() => setShowUpgrade(false)} />}
     </div>
   );
 }
