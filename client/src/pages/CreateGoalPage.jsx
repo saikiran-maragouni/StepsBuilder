@@ -38,7 +38,7 @@ export default function CreateGoalPage() {
           <ArrowLeft size={15} /> Back to Goals
         </button>
 
-        <div style={{ maxWidth: 600 }}>
+        <div className="create-goal-container">
           <div style={{ marginBottom: 32 }}>
             <h1 className="topbar-title">Create New Goal</h1>
             <p style={{ color: 'var(--text-secondary)', marginTop: 6, fontSize: 14 }}>The more context you give Gemini, the better your roadmap will be.</p>
