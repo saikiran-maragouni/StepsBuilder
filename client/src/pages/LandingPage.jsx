@@ -3,137 +3,16 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Check } from 'lucide-react';
 import stepsIcon from '../assets/steps-icon.png';
 
-/* ─── Inline SVG Components ─── */
-
-function HeroIllustration() {
-  return (
-    <svg viewBox="0 0 560 460" fill="none" xmlns="http://www.w3.org/2000/svg" className="lp-hero-svg">
-      {/* Glowing base circle */}
-      <defs>
-        <radialGradient id="glow1" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0.25" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-        </radialGradient>
-        <linearGradient id="cardGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="rgba(255,255,255,0.07)" />
-          <stop offset="100%" stopColor="rgba(255,255,255,0.02)" />
-        </linearGradient>
-        <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0.6" />
-          <stop offset="50%" stopColor="#34d399" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
-        </linearGradient>
-        <linearGradient id="barGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#10b981" />
-          <stop offset="100%" stopColor="#34d399" />
-        </linearGradient>
-        <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
-          <feDropShadow dx="0" dy="8" stdDeviation="16" floodColor="#000" floodOpacity="0.35" />
-        </filter>
-        <filter id="nodeShadow">
-          <feDropShadow dx="0" dy="2" stdDeviation="6" floodColor="#10b981" floodOpacity="0.5" />
-        </filter>
-      </defs>
-
-      {/* Background glow */}
-      <circle cx="280" cy="230" r="200" fill="url(#glow1)" className="lp-float" />
-
-      {/* ── Main dashboard card ── */}
-      <g filter="url(#cardShadow)">
-        <rect x="80" y="60" width="400" height="280" rx="18" fill="url(#cardGrad)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" />
-        {/* Title bar dots */}
-        <circle cx="104" cy="84" r="4" fill="#ef4444" opacity="0.7" />
-        <circle cx="118" cy="84" r="4" fill="#f59e0b" opacity="0.7" />
-        <circle cx="132" cy="84" r="4" fill="#10b981" opacity="0.7" />
-        {/* Title text */}
-        <rect x="200" y="77" width="160" height="12" rx="3" fill="rgba(255,255,255,0.08)" />
-
-        {/* ── Goal roadmap visualization ── */}
-        {/* Phase labels */}
-        <rect x="104" y="116" width="64" height="8" rx="2" fill="rgba(16,185,129,0.3)" />
-        <rect x="104" y="130" width="120" height="10" rx="2" fill="rgba(255,255,255,0.12)" />
-
-        {/* Progress bar */}
-        <rect x="104" y="152" width="344" height="6" rx="3" fill="rgba(255,255,255,0.06)" />
-        <rect x="104" y="152" width="248" height="6" rx="3" fill="url(#barGrad)" className="lp-progress-grow" />
-
-        {/* Step cards row */}
-        <g className="lp-card-appear" style={{ animationDelay: '0.2s' }}>
-          <rect x="104" y="176" width="104" height="72" rx="10" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" strokeWidth="0.8" />
-          <circle cx="124" cy="196" r="8" fill="rgba(16,185,129,0.2)" />
-          <path d="M120 196l3 3 6-6" stroke="#10b981" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-          <rect x="116" y="212" width="72" height="6" rx="2" fill="rgba(255,255,255,0.1)" />
-          <rect x="116" y="224" width="52" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
-        </g>
-
-        <g className="lp-card-appear" style={{ animationDelay: '0.4s' }}>
-          <rect x="220" y="176" width="104" height="72" rx="10" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.2)" strokeWidth="0.8" />
-          <circle cx="240" cy="196" r="8" fill="rgba(16,185,129,0.2)" />
-          <path d="M236 196l3 3 6-6" stroke="#10b981" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-          <rect x="232" y="212" width="72" height="6" rx="2" fill="rgba(255,255,255,0.1)" />
-          <rect x="232" y="224" width="60" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
-        </g>
-
-        <g className="lp-card-appear" style={{ animationDelay: '0.6s' }}>
-          <rect x="336" y="176" width="104" height="72" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" strokeWidth="0.8" strokeDasharray="3 3" />
-          <circle cx="356" cy="196" r="8" fill="rgba(255,255,255,0.06)" />
-          <rect x="348" y="212" width="72" height="6" rx="2" fill="rgba(255,255,255,0.06)" />
-          <rect x="348" y="224" width="44" height="5" rx="2" fill="rgba(255,255,255,0.04)" />
-        </g>
-
-        {/* Stats row at bottom */}
-        <rect x="104" y="268" width="74" height="52" rx="8" fill="rgba(255,255,255,0.04)" />
-        <text x="118" y="290" fill="#10b981" fontSize="18" fontWeight="700" fontFamily="Outfit">72%</text>
-        <text x="118" y="306" fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="Inter">Progress</text>
-
-        <rect x="190" y="268" width="74" height="52" rx="8" fill="rgba(255,255,255,0.04)" />
-        <text x="204" y="290" fill="#34d399" fontSize="18" fontWeight="700" fontFamily="Outfit">14</text>
-        <text x="204" y="306" fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="Inter">Tasks Done</text>
-
-        <rect x="276" y="268" width="74" height="52" rx="8" fill="rgba(255,255,255,0.04)" />
-        <text x="290" y="290" fill="#6ee7b7" fontSize="18" fontWeight="700" fontFamily="Outfit">5d</text>
-        <text x="290" y="306" fill="rgba(255,255,255,0.3)" fontSize="8" fontFamily="Inter">Streak</text>
-      </g>
-
-      {/* ── Floating accent cards ── */}
-      {/* AI nudge card — floats top-right */}
-      <g className="lp-float-card" style={{ animationDelay: '0.8s' }}>
-        <rect x="400" y="20" width="150" height="56" rx="12" fill="rgba(16,185,129,0.12)" stroke="rgba(16,185,129,0.25)" strokeWidth="0.8" />
-        <circle cx="420" cy="48" r="10" fill="rgba(16,185,129,0.25)" />
-        <text x="418" y="52" fontSize="12">⚡</text>
-        <rect x="438" y="38" width="80" height="6" rx="2" fill="rgba(255,255,255,0.12)" />
-        <rect x="438" y="50" width="56" height="5" rx="2" fill="rgba(255,255,255,0.07)" />
-      </g>
-
-      {/* Journal entry card — floats bottom-left */}
-      <g className="lp-float-card" style={{ animationDelay: '1.2s', animationDuration: '5s' }}>
-        <rect x="20" y="300" width="130" height="56" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.1)" strokeWidth="0.8" />
-        <circle cx="40" cy="328" r="10" fill="rgba(16,185,129,0.15)" />
-        <text x="36" y="332" fontSize="11">📓</text>
-        <rect x="58" y="318" width="72" height="6" rx="2" fill="rgba(255,255,255,0.1)" />
-        <rect x="58" y="330" width="52" height="5" rx="2" fill="rgba(255,255,255,0.06)" />
-      </g>
-
-      {/* ── Connecting path with animated nodes ── */}
-      <path d="M280 360 Q 280 400, 320 420 T 400 440" stroke="url(#lineGrad)" strokeWidth="1.5" fill="none" strokeDasharray="4 4" className="lp-dash-anim" />
-
-      {/* Glowing nodes */}
-      <circle cx="280" cy="360" r="5" fill="#10b981" filter="url(#nodeShadow)" className="lp-pulse-node" />
-      <circle cx="340" cy="420" r="4" fill="#34d399" filter="url(#nodeShadow)" className="lp-pulse-node" style={{ animationDelay: '0.5s' }} />
-      <circle cx="400" cy="440" r="3" fill="#6ee7b7" filter="url(#nodeShadow)" className="lp-pulse-node" style={{ animationDelay: '1s' }} />
-    </svg>
-  );
-}
-
+/* ─── Old SVG helpers (used by old sections) ─── */
 function RoadmapPathSVG() {
   return (
     <svg viewBox="0 0 800 120" fill="none" xmlns="http://www.w3.org/2000/svg" className="lp-roadmap-path" aria-hidden="true">
       <defs>
         <linearGradient id="pathGrad" x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#10b981" stopOpacity="0" />
-          <stop offset="20%" stopColor="#10b981" stopOpacity="0.5" />
-          <stop offset="50%" stopColor="#34d399" stopOpacity="0.3" />
-          <stop offset="80%" stopColor="#10b981" stopOpacity="0.5" />
+          <stop offset="0%"   stopColor="#10b981" stopOpacity="0" />
+          <stop offset="20%"  stopColor="#10b981" stopOpacity="0.5" />
+          <stop offset="50%"  stopColor="#34d399" stopOpacity="0.3" />
+          <stop offset="80%"  stopColor="#10b981" stopOpacity="0.5" />
           <stop offset="100%" stopColor="#10b981" stopOpacity="0" />
         </linearGradient>
       </defs>
@@ -148,13 +27,12 @@ function RoadmapPathSVG() {
   );
 }
 
-/* ─── Scroll reveal hook ─── */
+/* ─── Scroll reveal (old style) ─── */
 function useReveal(threshold = 0.15) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
+    const el = ref.current; if (!el) return;
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.disconnect(); } },
       { threshold }
@@ -164,14 +42,13 @@ function useReveal(threshold = 0.15) {
   }, [threshold]);
   return [ref, visible];
 }
-
-function RevealSection({ children, className = '', delay = 0, ...rest }) {
+function RevealSection({ children, className = '', delay = 0, style: extraStyle, ...rest }) {
   const [ref, visible] = useReveal(0.1);
   return (
     <div
       ref={ref}
       className={`lp-reveal ${visible ? 'lp-visible' : ''} ${className}`}
-      style={{ transitionDelay: `${delay}ms`, ...rest.style }}
+      style={{ transitionDelay: `${delay}ms`, ...extraStyle }}
       {...rest}
     >
       {children}
@@ -183,7 +60,6 @@ function RevealSection({ children, className = '', delay = 0, ...rest }) {
 function Counter({ end, suffix = '', duration = 2000 }) {
   const [count, setCount] = useState(0);
   const [ref, visible] = useReveal(0.3);
-
   useEffect(() => {
     if (!visible) return;
     let start = 0;
@@ -195,15 +71,35 @@ function Counter({ end, suffix = '', duration = 2000 }) {
     }, 16);
     return () => clearInterval(timer);
   }, [visible, end, duration]);
-
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
+/* ─── Old Navbar (Sticky) ─── */
+function Navbar() {
+  return (
+    <nav className="lp-nav">
+      <div className="lp-nav-inner">
+        <Link to="/" className="lp-nav-logo">
+          <img src={stepsIcon} alt="StepsBuilder" className="lp-nav-logo-img" />
+          <span className="lp-nav-logo-text">StepsBuilder</span>
+        </Link>
+        <div className="lp-nav-links">
+          <a href="#features" className="lp-nav-link">Features</a>
+          <a href="#how-it-works" className="lp-nav-link">How it works</a>
+          <Link to="/login" className="lp-nav-link">Sign In</Link>
+          <Link to="/login" className="btn btn-primary btn-sm" id="btn-get-started-nav">Get Started Free</Link>
+        </div>
+      </div>
+    </nav>
+  );
+}
+
 /* ─── Data ─── */
+const steps = ['PLAN', 'DREAM', 'BUILD', 'LEARN', 'START', 'ACHIEVE'];
+
 const howItWorks = [
   {
-    step: '01',
-    title: 'Describe your goal',
+    step: '01', title: 'Describe your goal',
     desc: 'Type anything in plain language — "Learn React in 3 months" or "Build a SaaS by December."',
     icon: (
       <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
@@ -215,22 +111,20 @@ const howItWorks = [
     ),
   },
   {
-    step: '02',
-    title: 'AI builds your roadmap',
+    step: '02', title: 'AI builds your roadmap',
     desc: 'Gemini creates phases, milestones, and step-by-step tasks — tailored to your timeline and skill level.',
     icon: (
       <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
         <path d="M8 32 L16 18 L24 24 L32 8" stroke="#10b981" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        <circle cx="8" cy="32" r="3" fill="#10b981" opacity="0.5" />
+        <circle cx="8"  cy="32" r="3" fill="#10b981" opacity="0.5" />
         <circle cx="16" cy="18" r="3" fill="#34d399" opacity="0.5" />
         <circle cx="24" cy="24" r="3" fill="#10b981" opacity="0.5" />
-        <circle cx="32" cy="8" r="3" fill="#6ee7b7" opacity="0.5" />
+        <circle cx="32" cy="8"  r="3" fill="#6ee7b7" opacity="0.5" />
       </svg>
     ),
   },
   {
-    step: '03',
-    title: 'Track, journal, grow',
+    step: '03', title: 'Track, journal, grow',
     desc: 'Daily tasks, natural journaling, and smart nudges keep your momentum alive — even when motivation dips.',
     icon: (
       <svg viewBox="0 0 40 40" fill="none" width="40" height="40">
@@ -241,130 +135,128 @@ const howItWorks = [
   },
 ];
 
-const features = [
-  { title: 'AI Roadmap Builder', desc: 'Describe your goal in plain language. Gemini builds a structured, phased roadmap tailored to your context.', accent: '#10b981', size: 'large' },
-  { title: 'Smart Daily Tasks', desc: 'AI generates your daily to-do list based on your current roadmap step and available time.', accent: '#34d399', size: 'small' },
-  { title: 'Natural Journal', desc: 'Write freely about your day. Gemini reads it and maps your activity to roadmap progress.', accent: '#6ee7b7', size: 'small' },
-  { title: 'Intelligent Nudges', desc: 'Stuck on a step? The AI detects momentum drops and sends personalized motivational nudges.', accent: '#0d9488', size: 'small' },
-  { title: 'Weekly Insights', desc: 'Get a Gemini-generated weekly summary: accomplishments, trends, and what to focus on next.', accent: '#059669', size: 'small' },
-  { title: 'Adaptive Learning', desc: 'The system learns from your corrections and improves its understanding of your work style.', accent: '#10b981', size: 'large' },
-];
+
 
 const stats = [
-  { value: 10, suffix: 's', label: 'To generate a roadmap' },
-  { value: 98, suffix: '%', label: 'User satisfaction' },
-  { value: 500, suffix: '+', label: 'Goals created' },
-  { value: 24, suffix: '/7', label: 'AI-powered tracking' },
+  { value: 10,  suffix: 's',  label: 'To generate a roadmap' },
+  { value: 98,  suffix: '%',  label: 'User satisfaction' },
+  { value: 500, suffix: '+',  label: 'Goals created' },
+  { value: 24,  suffix: '/7', label: 'AI-powered tracking' },
 ];
 
-/* ═════════════════════════════════════════════════════════════════
-   Landing Page Component
-   ═════════════════════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════
+   LANDING PAGE
+══════════════════════════════════════════════════ */
 export default function LandingPage() {
+  const heroImgRef = useRef(null);
+
+  /* Parallax on hero image */
+  useEffect(() => {
+    const fn = () => {
+      if (heroImgRef.current) heroImgRef.current.style.transform = `translateY(${window.scrollY * 0.12}px)`;
+    };
+    window.addEventListener('scroll', fn, { passive: true });
+    return () => window.removeEventListener('scroll', fn);
+  }, []);
+
   return (
     <div className="lp-root">
-      {/* ─── Animated mesh background ─── */}
+      {/* Ambient mesh */}
       <div className="lp-mesh" aria-hidden="true">
         <div className="lp-mesh-orb lp-mesh-1" />
         <div className="lp-mesh-orb lp-mesh-2" />
         <div className="lp-mesh-orb lp-mesh-3" />
       </div>
-
-      {/* Grid pattern overlay */}
       <div className="lp-grid-pattern" aria-hidden="true" />
 
-      {/* ─── Navbar ─── */}
-      <nav className="lp-nav">
-        <div className="lp-nav-inner">
-          <Link to="/" className="lp-nav-logo">
-            <img src={stepsIcon} alt="StepsBuilder" className="lp-nav-logo-img" />
-            <span className="lp-nav-logo-text">StepsBuilder</span>
-          </Link>
-          <div className="lp-nav-links">
-            <a href="#features" className="lp-nav-link">Features</a>
-            <a href="#how-it-works" className="lp-nav-link">How it works</a>
-            <Link to="/login" className="lp-nav-link">Sign In</Link>
-            <Link to="/login" className="btn btn-primary btn-sm" id="btn-get-started-nav">Get Started Free</Link>
-          </div>
+      {/* ── NAVBAR (current transparent floating) ── */}
+      <Navbar />
+
+      {/* ══════════════════════════════════════
+          HERO — current version with hero.png
+      ══════════════════════════════════════ */}
+      <section className="hero">
+        {/* Vertical step labels */}
+        <div className="hero-vline" aria-hidden="true">
+          {steps.map((s, i) => (
+            <span key={s} className="hero-vword" style={{ animationDelay: `${i * 0.15}s` }}>{s}</span>
+          ))}
+          <div className="hero-vbar" />
         </div>
-      </nav>
 
-      {/* ─── Hero ─── */}
-      <section className="lp-hero">
-        <div className="lp-hero-content">
-          <div className="lp-hero-left">
-            {/* Badge */}
-            <RevealSection delay={0}>
-              <div className="lp-badge">
-                <span className="lp-badge-dot" />
-                Powered by Gemini AI
-              </div>
-            </RevealSection>
-
-            <RevealSection delay={100}>
-              <h1 className="lp-hero-h1">
-                Your goals deserve<br />
-                <span className="lp-gradient-text">a real plan.</span>
-              </h1>
-            </RevealSection>
-
-            <RevealSection delay={200}>
-              <p className="lp-hero-sub">
-                StepsBuilder turns ambitions into AI-powered roadmaps — then keeps you moving with daily tasks, journal tracking, and intelligent nudges.
-              </p>
-            </RevealSection>
-
-            <RevealSection delay={300}>
-              <div className="lp-hero-ctas">
-                <Link to="/login" className="lp-cta-primary" id="btn-get-started-hero">
-                  Start Building for Free <ArrowRight size={18} />
-                </Link>
-                <a href="#how-it-works" className="lp-cta-secondary">
-                  See how it works
-                </a>
-              </div>
-            </RevealSection>
-
-            <RevealSection delay={400}>
-              <div className="lp-hero-proof">
-                <div className="lp-hero-avatars">
-                  {['🎯','⚡','🚀','🌟','💡'].map((e, i) => (
-                    <div key={i} className="lp-hero-avatar" style={{ zIndex: 5 - i, marginLeft: i > 0 ? -8 : 0 }}>{e}</div>
-                  ))}
-                </div>
-                <span className="lp-hero-proof-text">
-                  <strong>500+</strong> builders already growing
-                </span>
-              </div>
-            </RevealSection>
+        {/* Left */}
+        <div className="hero-left">
+          <div className="step-path">
+            {steps.map((s, i) => (
+              <span key={s} className="step-word" style={{ animationDelay: `${i * 0.12}s` }}>
+                {s}
+                {i < steps.length - 1 && <span className="step-arrow">→</span>}
+              </span>
+            ))}
           </div>
 
-          <div className="lp-hero-right">
-            <RevealSection delay={200}>
-              <HeroIllustration />
-            </RevealSection>
+          <h1 className="hero-h1">
+            Your goal is waiting<br />
+            <span className="hero-h1-em">at the top.</span>
+          </h1>
+
+          <p className="hero-tagline">
+            We build the roadmap.<br />You climb the steps.
+          </p>
+
+          <div className="hero-actions">
+            <Link to="/login" id="btn-get-started-hero" className="hero-cta">
+              Begin climbing <ArrowRight size={16} />
+            </Link>
+            <div className="hero-meta">
+              <span className="hero-meta-dot" />
+              <span>Free forever · No credit card</span>
+            </div>
           </div>
         </div>
 
-        {/* Decorative roadmap path */}
-        <RoadmapPathSVG />
+        {/* Right — hero image */}
+        <div className="hero-right">
+          <img
+            ref={heroImgRef}
+            src="/hero.png"
+            alt="Climb your goals step by step"
+            className="hero-img"
+          />
+          <div className="chip chip-a">
+            <div className="chip-top">🔥 12</div>
+            <div className="chip-bot">Day streak</div>
+          </div>
+          <div className="chip chip-b">
+            <div className="chip-top" style={{ color: '#10b981' }}>✓ Done</div>
+            <div className="chip-bot">Phase 2 complete</div>
+          </div>
+        </div>
+
+        {/* Scroll hint */}
+        <div className="scroll-hint" aria-hidden="true">
+          <div className="scroll-line" />
+          <span>scroll</span>
+        </div>
       </section>
 
-      {/* ─── Stats Bar ─── */}
+      {/* ══════════════════════════════════════
+          STATS BAR (old)
+      ══════════════════════════════════════ */}
       <section className="lp-stats">
         <div className="lp-stats-inner">
           {stats.map(({ value, suffix, label }, i) => (
             <RevealSection key={label} delay={i * 100} className="lp-stat">
-              <div className="lp-stat-value">
-                <Counter end={value} suffix={suffix} />
-              </div>
+              <div className="lp-stat-value"><Counter end={value} suffix={suffix} /></div>
               <div className="lp-stat-label">{label}</div>
             </RevealSection>
           ))}
         </div>
       </section>
 
-      {/* ─── How It Works ─── */}
+      {/* ══════════════════════════════════════
+          HOW IT WORKS (old)
+      ══════════════════════════════════════ */}
       <section className="lp-section" id="how-it-works">
         <RevealSection>
           <div className="lp-section-header">
@@ -373,7 +265,6 @@ export default function LandingPage() {
             <p className="lp-section-sub">No complicated setup. No templates. Just type your goal.</p>
           </div>
         </RevealSection>
-
         <div className="lp-steps">
           {howItWorks.map(({ step, title, desc, icon }, i) => (
             <RevealSection key={step} delay={i * 150} className="lp-step">
@@ -381,13 +272,14 @@ export default function LandingPage() {
               <div className="lp-step-icon">{icon}</div>
               <h3 className="lp-step-title">{title}</h3>
               <p className="lp-step-desc">{desc}</p>
-              {i < 2 && <div className="lp-step-connector" aria-hidden="true" />}
             </RevealSection>
           ))}
         </div>
       </section>
 
-      {/* ─── Features Bento Grid ─── */}
+      {/* ══════════════════════════════════════
+          FEATURES BENTO GRID (old)
+      ══════════════════════════════════════ */}
       <section className="lp-section" id="features">
         <RevealSection>
           <div className="lp-section-header">
@@ -396,36 +288,86 @@ export default function LandingPage() {
             <p className="lp-section-sub">Built different from todo apps. Built for people with real ambitions.</p>
           </div>
         </RevealSection>
+        
+        <div className="bento-grid">
+          {/* Card 1: AI Roadmap Builder - Horizontal Layout */}
+          <RevealSection delay={100} className="bento-item bento-large bento-roadmap">
+            <div className="bento-text">
+              <h3>AI Roadmap Builder</h3>
+              <p>Describe your goal in plain language. Gemini builds a structured, phased roadmap tailored to your context.</p>
+            </div>
+            <div className="bento-visual-right">
+              <div className="mock-roadmap">
+                <div className="mock-step mock-active">Phase 1: Foundations</div>
+                <div className="mock-step">Phase 2: Execution</div>
+                <div className="mock-step">Phase 3: Launch</div>
+              </div>
+            </div>
+            <div className="bento-bg" style={{background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, rgba(16,185,129,0.05) 100%)'}}/>
+          </RevealSection>
 
-        <div className="lp-bento">
-          {features.map(({ title, desc, accent, size }, i) => (
-            <RevealSection key={title} delay={i * 80} className={`lp-bento-card lp-bento-${size}`}>
-              <div className="lp-bento-accent" style={{ background: accent }} />
-              <h3 className="lp-bento-title">{title}</h3>
-              <p className="lp-bento-desc">{desc}</p>
-              <div className="lp-bento-glow" style={{ background: `radial-gradient(circle at 30% 80%, ${accent}18, transparent 70%)` }} />
-            </RevealSection>
-          ))}
+          {/* Card 2: Daily Tasks - Vertical Layout */}
+          <RevealSection delay={200} className="bento-item bento-tasks">
+            <div className="bento-visual-top">
+              <div className="mock-task"><div className="mock-check mock-checked"/> Review basics</div>
+              <div className="mock-task"><div className="mock-check"/> Setup env</div>
+            </div>
+            <div className="bento-text">
+              <h3>Smart Daily Tasks</h3>
+              <p>AI generates your daily to-do list based on your roadmap.</p>
+            </div>
+          </RevealSection>
+
+          {/* Card 3: Journal - Typography focused */}
+          <RevealSection delay={300} className="bento-item bento-journal">
+            <div className="bento-text">
+              <h3>Natural Journal</h3>
+              <p>Write freely. Gemini reads it and maps your activity to progress.</p>
+            </div>
+            <div className="mock-journal-bg">"Today I learned..."</div>
+          </RevealSection>
+
+          {/* Card 4: Nudges - Icon focused */}
+          <RevealSection delay={400} className="bento-item bento-nudges">
+            <div className="bento-icon-wrapper">
+              <span className="bento-icon">🔔</span>
+            </div>
+            <div className="bento-text">
+              <h3>Intelligent Nudges</h3>
+              <p>Stuck? The AI detects momentum drops and sends a push.</p>
+            </div>
+          </RevealSection>
+
+          {/* Card 5: Insights - Chart visual */}
+          <RevealSection delay={500} className="bento-item bento-insights">
+            <div className="bento-visual-top mock-chart-box">
+              <div className="mock-chart">
+                <div className="bar" style={{height: '40%'}}></div>
+                <div className="bar" style={{height: '70%'}}></div>
+                <div className="bar" style={{height: '100%', background: '#10b981'}}></div>
+                <div className="bar" style={{height: '60%'}}></div>
+              </div>
+            </div>
+            <div className="bento-text">
+              <h3>Weekly Insights</h3>
+              <p>Gemini spots trends and tells you where to focus next.</p>
+            </div>
+          </RevealSection>
+
+          {/* Card 6: Adaptive - Big center layout */}
+          <RevealSection delay={600} className="bento-item bento-large bento-adaptive">
+            <div className="mock-brain">🧠</div>
+            <div className="bento-text center-text">
+              <h3>Adaptive Learning</h3>
+              <p>The system learns from your corrections and adapts to your rhythm over time.</p>
+            </div>
+          </RevealSection>
         </div>
       </section>
 
-      {/* ─── Social Proof ─── */}
-      <section className="lp-section">
-        <RevealSection>
-          <div className="lp-proof-card">
-            <div className="lp-proof-quote">"StepsBuilder replaced my Notion boards, to-do apps, and motivational podcast subscriptions — all in one."</div>
-            <div className="lp-proof-author">
-              <div className="lp-proof-avatar">R</div>
-              <div>
-                <div className="lp-proof-name">Ravi M.</div>
-                <div className="lp-proof-role">Software Developer</div>
-              </div>
-            </div>
-          </div>
-        </RevealSection>
-      </section>
-
-      {/* ─── Final CTA ─── */}
+      {/* ══════════════════════════════════════
+          FINAL CTA (old)
+      ══════════════════════════════════════ */}
       <section className="lp-cta-section">
         <div className="lp-cta-glow" aria-hidden="true" />
         <RevealSection>
@@ -434,9 +376,7 @@ export default function LandingPage() {
             <p className="lp-cta-sub">Free to use. No credit card. Your first AI roadmap takes 10 seconds.</p>
             <div className="lp-cta-features">
               {['AI-powered roadmaps', 'Smart daily tasks', 'Journal tracking', 'Intelligent nudges'].map((f) => (
-                <div key={f} className="lp-cta-feature">
-                  <Check size={14} /> {f}
-                </div>
+                <div key={f} className="lp-cta-feature"><Check size={14} /> {f}</div>
               ))}
             </div>
             <Link to="/login" className="lp-cta-primary lp-cta-btn" id="btn-cta-final">
@@ -446,7 +386,9 @@ export default function LandingPage() {
         </RevealSection>
       </section>
 
-      {/* ─── Footer ─── */}
+      {/* ══════════════════════════════════════
+          FOOTER (old)
+      ══════════════════════════════════════ */}
       <footer className="lp-footer">
         <div className="lp-footer-inner">
           <div className="lp-footer-brand">
@@ -462,78 +404,35 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* ─── Scoped Styles ─── */}
+      {/* ══════════════════════════════════════
+          ALL STYLES
+      ══════════════════════════════════════ */}
       <style>{`
-/* ═══ ROOT ═══ */
-.lp-root {
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-  background: #050f0a;
-  color: rgba(255,255,255,0.93);
-}
+/* ── ROOT ── */
+.lp-root { min-height:100vh; position:relative; overflow-x:hidden; background:#050f0a; color:rgba(255,255,255,.93); }
 
-/* ═══ ANIMATED MESH BACKGROUND ═══ */
-.lp-mesh {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: hidden;
-}
-.lp-mesh-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-}
-.lp-mesh-1 {
-  width: 600px; height: 600px;
-  top: -10%; left: -5%;
-  background: radial-gradient(circle, rgba(16,185,129,0.15), transparent 70%);
-  animation: meshFloat1 18s ease-in-out infinite;
-}
-.lp-mesh-2 {
-  width: 500px; height: 500px;
-  top: 40%; right: -10%;
-  background: radial-gradient(circle, rgba(5,150,105,0.12), transparent 70%);
-  animation: meshFloat2 22s ease-in-out infinite;
-}
-.lp-mesh-3 {
-  width: 400px; height: 400px;
-  bottom: -5%; left: 30%;
-  background: radial-gradient(circle, rgba(13,148,136,0.1), transparent 70%);
-  animation: meshFloat3 15s ease-in-out infinite;
-}
-@keyframes meshFloat1 { 0%,100%{transform:translate(0,0)} 33%{transform:translate(60px,40px)} 66%{transform:translate(-30px,80px)} }
-@keyframes meshFloat2 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-80px,-60px)} }
-@keyframes meshFloat3 { 0%,100%{transform:translate(0,0)} 50%{transform:translate(50px,-40px)} }
+/* ── MESH BG ── */
+.lp-mesh { position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden; }
+.lp-mesh-orb { position:absolute; border-radius:50%; filter:blur(80px); }
+.lp-mesh-1 { width:600px;height:600px;top:-10%;left:-5%;background:radial-gradient(circle,rgba(16,185,129,.15),transparent 70%);animation:meshFloat1 18s ease-in-out infinite; }
+.lp-mesh-2 { width:500px;height:500px;top:40%;right:-10%;background:radial-gradient(circle,rgba(5,150,105,.12),transparent 70%);animation:meshFloat2 22s ease-in-out infinite; }
+.lp-mesh-3 { width:400px;height:400px;bottom:-5%;left:30%;background:radial-gradient(circle,rgba(13,148,136,.1),transparent 70%);animation:meshFloat3 15s ease-in-out infinite; }
+@keyframes meshFloat1{0%,100%{transform:translate(0,0)}33%{transform:translate(60px,40px)}66%{transform:translate(-30px,80px)}}
+@keyframes meshFloat2{0%,100%{transform:translate(0,0)}50%{transform:translate(-80px,-60px)}}
+@keyframes meshFloat3{0%,100%{transform:translate(0,0)}50%{transform:translate(50px,-40px)}}
 
-/* ═══ GRID PATTERN ═══ */
-.lp-grid-pattern {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
-  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
-}
+/* ── GRID PATTERN ── */
+.lp-grid-pattern { position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse at 50% 30%, black 20%, transparent 70%); }
 
-/* ═══ REVEAL ANIMATION ═══ */
-.lp-reveal {
-  opacity: 0;
-  transform: translateY(28px);
-  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.lp-reveal.lp-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* ── REVEAL ── */
+.lp-reveal { opacity:0; transform:translateY(28px); transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1); }
+.lp-reveal.lp-visible { opacity:1; transform:translateY(0); }
 
-/* ═══ NAV ═══ */
+/* ══ NAVBAR ══ */
 .lp-nav {
   position: sticky;
   top: 0;
@@ -581,431 +480,194 @@ export default function LandingPage() {
 }
 .lp-nav-link:hover { color: rgba(255,255,255,0.9); }
 
-/* ═══ HERO ═══ */
-.lp-hero {
-  position: relative;
-  z-index: 1;
-  max-width: 1300px;
-  margin: 0 auto;
-  padding: clamp(100px,14vw,160px) clamp(16px,4vw,48px) 60px;
+/* ══ HERO (current) ══ */
+.hero {
+  position:relative;z-index:1;
+  display:grid;grid-template-columns:1fr 1fr;
+  align-items:center;min-height:100vh;
+  max-width:1400px;margin:0 auto;
+  padding:80px clamp(16px,4vw,64px) 32px;
+  overflow:hidden;
 }
-.lp-hero-content {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  align-items: center;
-  gap: 72px;
-  min-height: 540px;
-}
-.lp-hero-left { display: flex; flex-direction: column; gap: 0; }
+/* Vertical step labels */
+.hero-vline { position:absolute;left:0;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding-left:4px;z-index:0;pointer-events:none; }
+.hero-vword { font-family:'Outfit',sans-serif;font-size:9px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(16,185,129,.18);opacity:0;animation:vwIn .5s ease forwards; }
+.hero-vword:last-of-type { color:rgba(16,185,129,.35); }
+@keyframes vwIn{to{opacity:1}}
+.hero-vbar { width:1px;height:48px;background:linear-gradient(to bottom,rgba(16,185,129,.25),transparent);margin-top:8px;animation:vbPulse 2.5s ease-in-out infinite; }
+@keyframes vbPulse{0%,100%{opacity:.3}50%{opacity:.8}}
 
-/* Badge */
-.lp-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 16px;
-  border-radius: 9999px;
-  background: rgba(16,185,129,0.08);
-  border: 1px solid rgba(16,185,129,0.2);
-  font-size: 13px;
-  font-weight: 600;
-  color: #34d399;
-  margin-bottom: 28px;
-  width: fit-content;
-}
-.lp-badge-dot {
-  width: 6px; height: 6px;
-  border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px #10b981;
-  animation: lpPulse 2s ease-in-out infinite;
-}
-@keyframes lpPulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+.hero-left { display:flex;flex-direction:column;gap:0;position:relative;z-index:2; }
+.step-path { display:flex;flex-wrap:wrap;align-items:center;gap:4px 0;margin-bottom:32px; }
+.step-word { display:inline-flex;align-items:center;gap:6px;font-family:'Outfit',sans-serif;font-size:clamp(11px,1.1vw,13px);font-weight:700;letter-spacing:.18em;color:rgba(255,255,255,.35);text-transform:uppercase;opacity:0;animation:stepIn .5s ease forwards; }
+@keyframes stepIn{to{opacity:1}}
+.step-word:last-child { color:#10b981;text-shadow:0 0 20px rgba(16,185,129,.5); }
+.step-arrow { color:rgba(16,185,129,.3);font-size:10px;margin:0 3px; }
 
-.lp-hero-h1 {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 900;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
-  margin-bottom: 24px;
-}
-.lp-gradient-text {
-  background: linear-gradient(135deg, #10b981 0%, #34d399 40%, #6ee7b7 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.lp-hero-sub {
-  font-size: clamp(15px, 1.8vw, 18px);
-  color: rgba(255,255,255,0.55);
-  line-height: 1.75;
-  margin-bottom: 36px;
-  max-width: 520px;
-}
+.hero-h1 { font-family:'Outfit',sans-serif;font-size:clamp(44px,5.5vw,80px);font-weight:900;line-height:1.02;letter-spacing:-.03em;margin-bottom:20px;color:white; }
+.hero-h1-em { background:linear-gradient(130deg,#10b981 0%,#34d399 45%,#6ee7b7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+.hero-tagline { font-size:clamp(18px,2.2vw,24px);color:rgba(255,255,255,.4);line-height:1.55;margin-bottom:40px;font-family:'Outfit',sans-serif;font-weight:400;font-style:italic; }
+.hero-actions { display:flex;flex-direction:column;gap:16px;align-items:flex-start; }
+.hero-cta { display:inline-flex;align-items:center;gap:10px;padding:16px 34px;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);color:white;font-weight:700;font-size:16px;text-decoration:none;border:none;cursor:pointer;box-shadow:0 6px 24px rgba(16,185,129,.4),inset 0 1px 0 rgba(255,255,255,.15);transition:transform .2s,box-shadow .2s;width:fit-content; }
+.hero-cta:hover { transform:translateY(-2px);box-shadow:0 10px 36px rgba(16,185,129,.55); }
+.hero-meta { display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(255,255,255,.3);font-weight:500; }
+.hero-meta-dot { width:5px;height:5px;border-radius:50%;background:#10b981;opacity:.5; }
 
-/* CTAs */
-.lp-hero-ctas { display: flex; gap: 14px; margin-bottom: 40px; flex-wrap: wrap; }
-.lp-cta-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 28px;
-  background: linear-gradient(135deg, #10b981, #059669);
-  color: white;
-  font-weight: 700;
-  font-size: 15px;
-  border-radius: 12px;
-  text-decoration: none;
-  transition: all 0.25s cubic-bezier(0.4,0,0.2,1);
-  box-shadow: 0 4px 20px rgba(16,185,129,0.35), inset 0 1px 0 rgba(255,255,255,0.15);
-  border: none;
-  cursor: pointer;
-}
-.lp-cta-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 32px rgba(16,185,129,0.5), inset 0 1px 0 rgba(255,255,255,0.2);
-}
-.lp-cta-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 24px;
-  background: transparent;
-  color: rgba(255,255,255,0.7);
-  font-weight: 600;
-  font-size: 15px;
-  border-radius: 12px;
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,0.12);
-  transition: all 0.2s;
-}
-.lp-cta-secondary:hover { border-color: rgba(16,185,129,0.4); color: #34d399; }
+.hero-right { position:relative;display:flex;align-items:center;justify-content:center; }
+.hero-img { width:100%;max-width:680px;height:auto;mix-blend-mode:lighten;filter:drop-shadow(0 0 80px rgba(16,185,129,.22));will-change:transform; }
+.chip { position:absolute;padding:10px 16px;border-radius:12px;background:rgba(5,15,10,.9);border:1px solid rgba(16,185,129,.18);backdrop-filter:blur(14px);box-shadow:0 8px 28px rgba(0,0,0,.45);animation:chipf 4s ease-in-out infinite; }
+.chip-a { top:22%;right:0;animation-delay:0s; }
+.chip-b { bottom:30%;left:0;animation-delay:1.5s; }
+@keyframes chipf{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.chip-top { font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:white; }
+.chip-bot { font-size:11px;color:rgba(255,255,255,.38);margin-top:2px; }
+.scroll-hint { position:absolute;bottom:32px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;color:rgba(255,255,255,.2);font-size:10px;letter-spacing:.14em;text-transform:uppercase; }
+.scroll-line { width:1px;height:44px;background:linear-gradient(to bottom,rgba(16,185,129,.5),transparent);animation:sl 1.8s ease-in-out infinite; }
+@keyframes sl{0%,100%{opacity:.3}50%{opacity:1}}
 
-/* Social proof */
-.lp-hero-proof { display: flex; align-items: center; gap: 14px; }
-.lp-hero-avatars { display: flex; }
-.lp-hero-avatar {
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  background: rgba(16,185,129,0.12);
-  border: 2px solid #050f0a;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 14px;
-}
-.lp-hero-proof-text { font-size: 13px; color: rgba(255,255,255,0.45); }
-.lp-hero-proof-text strong { color: #34d399; }
+/* ══ OLD SECTIONS ══ */
 
-/* Hero SVG */
-.lp-hero-svg { width: 100%; max-width: 680px; height: auto; filter: drop-shadow(0 24px 48px rgba(16,185,129,0.12)); }
-.lp-hero-right { display: flex; justify-content: center; align-items: center; }
+/* Stats */
+.lp-stats { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);background:rgba(255,255,255,.02); }
+.lp-stats-inner { max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:48px clamp(16px,4vw,48px); }
+.lp-stat { text-align:center; }
+.lp-stat-value { font-family:'Outfit',sans-serif;font-size:clamp(32px,4vw,48px);font-weight:800;background:linear-gradient(135deg,#10b981,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.1; }
+.lp-stat-label { font-size:13px;color:rgba(255,255,255,.4);margin-top:6px;font-weight:500; }
 
-/* Roadmap path */
-.lp-roadmap-path { width: 100%; height: auto; margin-top: -20px; opacity: 0.5; }
+/* Section wrapper */
+.lp-section { position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:clamp(80px,10vw,120px) clamp(16px,4vw,48px); }
+.lp-section-header { text-align:center;margin-bottom:64px; }
+.lp-section-tag { display:inline-block;font-size:12px;font-weight:700;color:#10b981;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px; }
+.lp-section-title { font-family:'Outfit',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;line-height:1.15;margin-bottom:16px; }
+.lp-section-sub { font-size:16px;color:rgba(255,255,255,.45);max-width:520px;margin:0 auto;line-height:1.7; }
+.lp-gradient-text { background:linear-gradient(135deg,#10b981,#34d399 50%,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
 
-/* SVG animations */
-.lp-float { animation: lpFloat 6s ease-in-out infinite; }
-@keyframes lpFloat { 0%,100%{transform:translate(0,0)} 50%{transform:translate(8px,-12px)} }
+/* How it works */
+.lp-steps { display:grid;grid-template-columns:repeat(3,1fr);gap:32px;position:relative; }
+.lp-step { position:relative;padding:36px 28px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:20px;transition:all .3s cubic-bezier(.4,0,.2,1);overflow:hidden; }
+.lp-step:hover { border-color:rgba(16,185,129,.3);transform:translateY(-4px);box-shadow:0 12px 40px rgba(16,185,129,.08); }
+.lp-step-num { position:absolute;top:14px;right:18px;font-family:'Outfit',sans-serif;font-size:72px;font-weight:900;color:rgba(16,185,129,.05);line-height:1;user-select:none; }
+.lp-step-icon { margin-bottom:20px; }
+.lp-step-title { font-size:20px;font-weight:700;margin-bottom:10px;font-family:'Outfit',sans-serif; }
+.lp-step-desc { font-size:14px;color:rgba(255,255,255,.5);line-height:1.75; }
 
-.lp-card-appear { opacity: 0; animation: lpCardIn 0.6s ease forwards; }
-@keyframes lpCardIn { to { opacity: 1; } }
+/* ══ BESPOKE BENTO ══ */
+.bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; grid-auto-rows: 280px; }
+.bento-item { background: rgba(255,255,255,0.025); border: 1px solid rgba(255,255,255,0.07); border-radius: 20px; overflow: hidden; position: relative; display: flex; flex-direction: column; transition: transform 0.3s, border-color 0.3s; }
+.bento-item:hover { border-color: rgba(16,185,129,0.25); transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.3); }
+.bento-large { grid-column: span 2; }
+.bento-bg { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
 
-.lp-float-card { animation: lpFloatCard 4s ease-in-out infinite; }
-@keyframes lpFloatCard { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-4px,-8px)} }
+/* Text */
+.bento-text { padding: 28px; z-index: 2; position: relative; }
+.bento-text h3 { font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+.bento-text p { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.center-text { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; max-width: 480px; margin: 0 auto; }
 
-.lp-dash-anim { animation: lpDash 20s linear infinite; }
-@keyframes lpDash { to { stroke-dashoffset: -200; } }
+/* Card 1: Roadmap */
+.bento-roadmap { flex-direction: row; align-items: center; justify-content: space-between; }
+.bento-roadmap .bento-text { width: 55%; }
+.bento-visual-right { width: 45%; padding-right: 32px; z-index: 2; }
+.mock-roadmap { display: flex; flex-direction: column; gap: 10px; }
+.mock-step { padding: 12px 16px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 13px; color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.05); }
+.mock-step.mock-active { background: rgba(16,185,129,0.08); color: #10b981; border-color: rgba(16,185,129,0.2); font-weight: 600; }
 
-.lp-pulse-node { animation: lpNodePulse 2s ease-in-out infinite; }
-@keyframes lpNodePulse { 0%,100%{opacity:0.4;r:3} 50%{opacity:1;r:5} }
+/* Card 2: Tasks */
+.bento-tasks { justify-content: space-between; }
+.bento-visual-top { padding: 28px 28px 0; display: flex; flex-direction: column; gap: 8px; z-index: 2; }
+.mock-task { display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 13px; border: 1px solid rgba(255,255,255,0.03); }
+.mock-check { width: 16px; height: 16px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.2); }
+.mock-check.mock-checked { background: #10b981; border-color: #10b981; }
 
-.lp-progress-grow { animation: lpGrow 2s ease forwards; }
-@keyframes lpGrow { from { width: 0; } }
+/* Card 3: Journal */
+.bento-journal { background: radial-gradient(circle at bottom right, rgba(52,211,153,0.1), transparent 60%); justify-content: flex-start; }
+.mock-journal-bg { position: absolute; bottom: 10px; right: 20px; font-family: serif; font-size: 40px; font-style: italic; color: rgba(255,255,255,0.04); font-weight: 700; line-height: 1; z-index: 1; }
 
-/* ═══ STATS ═══ */
-.lp-stats {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  background: rgba(255,255,255,0.02);
-}
-.lp-stats-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  padding: 48px clamp(16px,4vw,48px);
-}
-.lp-stat { text-align: center; }
-.lp-stat-value {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(32px, 4vw, 48px);
-  font-weight: 800;
-  background: linear-gradient(135deg, #10b981, #6ee7b7);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  line-height: 1.1;
-}
-.lp-stat-label {
-  font-size: 13px;
-  color: rgba(255,255,255,0.4);
-  margin-top: 6px;
-  font-weight: 500;
-}
+/* Card 4: Nudges */
+.bento-nudges { justify-content: flex-end; }
+.bento-icon-wrapper { position: absolute; top: 28px; left: 28px; width: 44px; height: 44px; background: rgba(13,148,136,0.15); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
 
-/* ═══ SECTIONS ═══ */
-.lp-section {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(80px,10vw,120px) clamp(16px,4vw,48px);
-}
-.lp-section-header { text-align: center; margin-bottom: 64px; }
-.lp-section-tag {
-  display: inline-block;
-  font-size: 12px;
-  font-weight: 700;
-  color: #10b981;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  margin-bottom: 16px;
-}
-.lp-section-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(28px, 4vw, 48px);
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 16px;
-}
-.lp-section-sub {
-  font-size: 16px;
-  color: rgba(255,255,255,0.45);
-  max-width: 520px;
-  margin: 0 auto;
-  line-height: 1.7;
-}
+/* Card 5: Insights */
+.bento-insights { justify-content: space-between; }
+.mock-chart-box { height: 100px; padding-top: 40px; }
+.mock-chart { display: flex; align-items: flex-end; gap: 8px; height: 100%; width: 100%; }
+.bar { flex: 1; background: rgba(255,255,255,0.08); border-radius: 4px 4px 0 0; }
 
-/* ═══ HOW IT WORKS — STEPS ═══ */
-.lp-steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-  position: relative;
-}
-.lp-step {
-  position: relative;
-  padding: 36px 28px;
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 20px;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-  overflow: hidden;
-}
-.lp-step:hover {
-  border-color: rgba(16,185,129,0.3);
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(16,185,129,0.08);
-}
-.lp-step-num {
-  position: absolute;
-  top: 14px; right: 18px;
-  font-family: 'Outfit', sans-serif;
-  font-size: 72px; font-weight: 900;
-  color: rgba(16,185,129,0.05);
-  line-height: 1;
-  user-select: none;
-}
-.lp-step-icon { margin-bottom: 20px; }
-.lp-step-title {
-  font-size: 20px; font-weight: 700; margin-bottom: 10px;
-  font-family: 'Outfit', sans-serif;
-}
-.lp-step-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.75; }
-.lp-step-connector {
-  display: none; /* Hidden on mobile, shown on desktop via grid positioning */
-}
+/* Card 6: Adaptive */
+.bento-adaptive { justify-content: center; align-items: center; }
+.mock-brain { position: absolute; font-size: 140px; opacity: 0.03; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1; }
 
-/* ═══ BENTO GRID ═══ */
-.lp-bento {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-auto-rows: minmax(200px, auto);
-  gap: 20px;
-}
-.lp-bento-card {
-  position: relative;
-  padding: 32px 28px;
-  background: rgba(255,255,255,0.025);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 20px;
-  overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
-}
-.lp-bento-card:hover {
-  border-color: rgba(16,185,129,0.25);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 36px rgba(0,0,0,0.3);
-}
-.lp-bento-large { grid-column: span 2; }
-.lp-bento-accent {
-  width: 4px; height: 32px;
-  border-radius: 4px;
-  margin-bottom: 20px;
-  opacity: 0.6;
-}
-.lp-bento-title {
-  font-size: 20px; font-weight: 700; margin-bottom: 10px;
-  font-family: 'Outfit', sans-serif;
-}
-.lp-bento-desc { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.75; max-width: 480px; }
-.lp-bento-glow {
-  position: absolute; inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.lp-bento-card:hover .lp-bento-glow { opacity: 1; }
+/* CTA section */
+.lp-cta-section { position:relative;z-index:1;text-align:center;padding:clamp(60px,8vw,100px) clamp(16px,4vw,48px); }
+.lp-cta-glow { position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(16,185,129,.1),transparent 70%);pointer-events:none; }
+.lp-cta-card { max-width:640px;margin:0 auto;padding:clamp(40px,6vw,64px);background:rgba(16,185,129,.05);border:1px solid rgba(16,185,129,.18);border-radius:24px;backdrop-filter:blur(24px);position:relative; }
+.lp-cta-title { font-family:'Outfit',sans-serif;font-size:clamp(28px,4vw,40px);font-weight:800;line-height:1.15;margin-bottom:14px; }
+.lp-cta-sub { color:rgba(255,255,255,.5);font-size:15px;line-height:1.7;margin-bottom:28px; }
+.lp-cta-features { display:flex;flex-wrap:wrap;justify-content:center;gap:12px 20px;margin-bottom:36px; }
+.lp-cta-feature { display:flex;align-items:center;gap:6px;font-size:13px;color:#34d399;font-weight:500; }
+.lp-cta-primary { display:inline-flex;align-items:center;gap:8px;padding:14px 28px;border-radius:12px;background:linear-gradient(135deg,#10b981,#059669);color:white;font-weight:700;font-size:15px;text-decoration:none;box-shadow:0 4px 18px rgba(16,185,129,.35);transition:transform .2s,box-shadow .2s; }
+.lp-cta-primary:hover { transform:translateY(-2px);box-shadow:0 8px 28px rgba(16,185,129,.5); }
+.lp-cta-btn { width:100%;justify-content:center;font-size:16px;padding:16px 32px; }
 
-/* ═══ SOCIAL PROOF ═══ */
-.lp-proof-card {
-  max-width: 680px;
-  margin: 0 auto;
-  padding: 48px 40px;
-  background: rgba(16,185,129,0.04);
-  border: 1px solid rgba(16,185,129,0.12);
-  border-radius: 24px;
-  text-align: center;
-}
-.lp-proof-quote {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(18px, 2.5vw, 24px);
-  font-weight: 500;
-  font-style: italic;
-  line-height: 1.65;
-  color: rgba(255,255,255,0.8);
-  margin-bottom: 32px;
-}
-.lp-proof-author { display: flex; align-items: center; gap: 14px; justify-content: center; }
-.lp-proof-avatar {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
-  display: flex; align-items: center; justify-content: center;
-  font-weight: 700; font-size: 16px; color: white;
-}
-.lp-proof-name { font-weight: 600; font-size: 15px; }
-.lp-proof-role { font-size: 13px; color: rgba(255,255,255,0.4); }
+/* Footer */
+.lp-footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,.06); }
+.lp-footer-inner { max-width:1200px;margin:0 auto;padding:clamp(20px,3vw,28px) clamp(16px,4vw,48px);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px; }
+.lp-footer-brand { display:flex;align-items:center;gap:10px; }
+.lp-footer-name { font-family:'Outfit',sans-serif;font-weight:700;font-size:15px;background:linear-gradient(135deg,#10b981,#34d399);-webkit-background-clip:text;-webkit-text-fill-color:transparent; }
+.lp-footer-copy { font-size:13px;color:rgba(255,255,255,.3); }
+.lp-footer-links { display:flex;gap:24px; }
+.lp-footer-link { font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s; }
+.lp-footer-link:hover { color:rgba(255,255,255,.7); }
 
-/* ═══ FINAL CTA ═══ */
-.lp-cta-section {
-  position: relative;
-  z-index: 1;
-  text-align: center;
-  padding: clamp(60px,8vw,100px) clamp(16px,4vw,48px);
-}
-.lp-cta-glow {
-  position: absolute;
-  top: 50%; left: 50%;
-  transform: translate(-50%,-50%);
-  width: 600px; height: 400px;
-  background: radial-gradient(ellipse, rgba(16,185,129,0.1), transparent 70%);
-  pointer-events: none;
-}
-.lp-cta-card {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: clamp(40px,6vw,64px);
-  background: rgba(16,185,129,0.05);
-  border: 1px solid rgba(16,185,129,0.18);
-  border-radius: 24px;
-  backdrop-filter: blur(24px);
-  position: relative;
-}
-.lp-cta-title {
-  font-family: 'Outfit', sans-serif;
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 800;
-  line-height: 1.15;
-  margin-bottom: 14px;
-}
-.lp-cta-sub {
-  color: rgba(255,255,255,0.5);
-  font-size: 15px;
-  line-height: 1.7;
-  margin-bottom: 28px;
-}
-.lp-cta-features {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px 20px;
-  margin-bottom: 36px;
-}
-.lp-cta-feature {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #34d399;
-  font-weight: 500;
-}
-.lp-cta-btn { width: 100%; justify-content: center; font-size: 16px; padding: 16px 32px; }
+/* Animations used by old SVGs */
+.lp-dash-anim { animation:lpDash 20s linear infinite; }
+@keyframes lpDash{to{stroke-dashoffset:-200}}
+.lp-pulse-node { animation:lpNodePulse 2s ease-in-out infinite; }
+@keyframes lpNodePulse{0%,100%{opacity:.4}50%{opacity:1}}
+.lp-roadmap-path { width:100%;height:auto;margin-top:-20px;opacity:.5; }
 
-/* ═══ FOOTER ═══ */
-.lp-footer {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid rgba(255,255,255,0.06);
+/* ══ RESPONSIVE ══ */
+@media(max-width:960px){
+  .lp-nav-links .lp-nav-link:not(.btn){display:none;}
+  .scroll-hint{display:none;}
+  .hero-vline{display:none;}
+  .hero{grid-template-columns:1fr 1fr;min-height:auto;padding:76px clamp(12px,3vw,32px) 24px;gap:16px;align-items:center;}
+  .hero-h1{font-size:clamp(26px,4vw,38px);}
+  .hero-tagline{font-size:clamp(13px,2vw,16px);margin-bottom:20px;}
+  .hero-img{max-width:100%;}
+  .chip{display:none;}
+  .lp-stats-inner{grid-template-columns:repeat(2,1fr);gap:32px;}
+  .lp-steps{grid-template-columns:1fr;max-width:480px;margin:0 auto;}
+  .bento-grid{grid-template-columns:1fr;grid-auto-rows:auto;}
+  .bento-large{grid-column:span 1;}
 }
-.lp-footer-inner {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: clamp(20px,3vw,28px) clamp(16px,4vw,48px);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 16px;
+@media(max-width:680px){
+  .lp-nav-links .lp-nav-link:not(.btn){display:none;}
+  .hero{grid-template-columns:1fr;text-align:center;padding:68px 16px 12px;gap:0;}
+  .hero-left{align-items:center;order:2;padding-bottom:20px;}
+  .hero-right{order:1;}
+  .step-path{justify-content:center;}
+  .hero-actions{align-items:center;}
+  .hero-h1{font-size:clamp(28px,8vw,40px);}
+  .hero-tagline{font-size:14px;margin-bottom:20px;}
+  .hero-img{max-width:260px;}
+  .chip{display:none;}
+  .lp-stats-inner{grid-template-columns:repeat(2,1fr);gap:24px;padding:32px 16px;}
+  .lp-stat-value{font-size:28px;}
+  .lp-cta-card{padding:32px 24px;}
+  
+  .bento-grid { gap: 12px; }
+  .bento-roadmap { flex-direction: column; }
+  .bento-roadmap .bento-text, .bento-visual-right { width: 100%; padding-right: 0; }
+  .bento-text { padding: 24px; }
+  .bento-visual-top, .bento-visual-right { padding: 24px 24px 0; }
+  .bento-icon-wrapper { position: relative; top: auto; left: auto; margin: 24px 24px 0; }
+  .bento-nudges { justify-content: flex-start; }
+  .bento-nudges .bento-text { padding-top: 16px; }
 }
-.lp-footer-brand { display: flex; align-items: center; gap: 10px; }
-.lp-footer-name {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 700; font-size: 15px;
-  background: linear-gradient(135deg,#10b981,#34d399);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-.lp-footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
-.lp-footer-links { display: flex; gap: 24px; }
-.lp-footer-link {
-  font-size: 13px;
-  color: rgba(255,255,255,0.35);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.lp-footer-link:hover { color: rgba(255,255,255,0.7); }
-
-/* ═══ RESPONSIVE ═══ */
-@media (max-width: 900px) {
-  .lp-hero-content { grid-template-columns: 1fr; text-align: center; gap: 48px; }
-  .lp-hero-left { align-items: center; }
-  .lp-hero-sub { margin-left: auto; margin-right: auto; }
-  .lp-hero-ctas { justify-content: center; }
-  .lp-hero-proof { justify-content: center; }
-  .lp-badge { margin-left: auto; margin-right: auto; }
-  .lp-hero-svg { max-width: 420px; }
-  .lp-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-  .lp-steps { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-  .lp-bento { grid-template-columns: 1fr; }
-  .lp-bento-large { grid-column: span 1; }
-  .lp-nav-link:not(:last-child) { display: none; }
-}
-
-@media (max-width: 480px) {
-  .lp-stats-inner { grid-template-columns: repeat(2, 1fr); gap: 24px; padding: 32px 16px; }
-  .lp-stat-value { font-size: 28px; }
-  .lp-proof-card { padding: 32px 24px; }
+@media(max-width:420px){
+  .hero-img{max-width:220px;}
+  .nav-cta{font-size:12px;padding:7px 14px;}
 }
       `}</style>
     </div>
