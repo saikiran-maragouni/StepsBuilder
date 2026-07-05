@@ -9,6 +9,7 @@ export default function AuthPage() {
   const [form, setForm] = useState({ name: '', email: '', password: '' });
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [slowRequest, setSlowRequest] = useState(false);
   const { login, register } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
@@ -26,6 +27,8 @@ export default function AuthPage() {
     if (!form.email.includes('@')) return toast.error('Please enter a valid email address.');
 
     setLoading(true);
+    setSlowRequest(false);
+    const slowTimer = setTimeout(() => setSlowRequest(true), 3000);
     try {
       if (mode === 'login') {
         const user = await login(form.email, form.password);
@@ -45,6 +48,8 @@ export default function AuthPage() {
         toast.error(data?.message || 'Something went wrong. Please try again.');
       }
     } finally {
+      clearTimeout(slowTimer);
+      setSlowRequest(false);
       setLoading(false);
     }
   };
@@ -115,6 +120,19 @@ export default function AuthPage() {
           <button id={`btn-${mode}`} type="submit" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', marginTop: 4, padding: '14px' }} disabled={loading}>
             {loading ? <span className="spinner" style={{ width: 18, height: 18 }} /> : mode === 'login' ? 'Sign In' : 'Create Account'}
           </button>
+
+          {slowRequest && (
+            <p style={{
+              fontSize: 13,
+              color: 'var(--text-muted)',
+              textAlign: 'center',
+              marginTop: 2,
+              lineHeight: 1.5,
+              animation: 'fadeIn 0.5s ease',
+            }}>
+              ☕ First load may take ~30 seconds while our server wakes up. Thanks for your patience!
+            </p>
+          )}
         </form>
 
         <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: 'var(--text-muted)' }}>
