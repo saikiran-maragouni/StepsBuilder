@@ -213,7 +213,7 @@ const regenerateRoadmap = async (req, res) => {
     }
 
     // 4. Reset momentum score on regeneration
-    await Goal.findByIdAndUpdate(goalId, { momentumScore: 50 });
+    await Goal.findByIdAndUpdate(goalId, { momentumScore: 0 });
 
     // 5. Bust Redis cache — roadmap has completely changed
     await cacheDel(roadmapCacheKey(goalId));
