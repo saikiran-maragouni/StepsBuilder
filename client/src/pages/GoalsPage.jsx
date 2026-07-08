@@ -6,6 +6,7 @@ import { useToast } from '../context/ToastContext';
 import Sidebar from '../components/Sidebar';
 import UpgradeModal from '../components/UpgradeModal';
 import { Plus, Target, Pause, Play, Trash2, TrendingUp, Clock, ChevronRight, Search, Crown, Zap } from 'lucide-react';
+import { GoalsPageSkeleton } from '../components/Skeleton';
 
 const categoryColors = { learning: '#3b82f6', career: '#6366f1', fitness: '#10b981', business: '#f59e0b', personal: '#06b6d4' };
 
@@ -53,7 +54,19 @@ export default function GoalsPage() {
     return matchStatus && matchSearch;
   });
 
-  if (loading) return <div className="app-layout"><Sidebar /><main className="main-content"><div className="loading-screen"><div className="spinner" style={{ width: 40, height: 40 }} /></div></main></div>;
+  if (loading) return (
+    <div className="app-layout">
+      <Sidebar />
+      <main className="main-content">
+        <div className="topbar">
+          <div>
+            <div style={{ fontFamily: 'Outfit', fontSize: 22, fontWeight: 800 }}>My Goals</div>
+          </div>
+        </div>
+        <GoalsPageSkeleton />
+      </main>
+    </div>
+  );
 
   return (
     <div className="app-layout">

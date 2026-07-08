@@ -258,7 +258,7 @@ export default function GoalDetailPage() {
   const [roadmap, setRoadmap] = useState(null);
   const [loading, setLoading] = useState(true);
   const [regenerating, setRegenerating] = useState(false);
-  const [view, setView] = useState('timeline'); // 'timeline' | 'map'
+  const [view, setView] = useState('map'); // 'timeline' | 'map'
 
   const load = async () => {
     try {

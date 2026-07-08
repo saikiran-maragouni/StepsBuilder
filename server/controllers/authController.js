@@ -192,4 +192,45 @@ const updateMe = async (req, res) => {
   }
 };
 
-module.exports = { register, login, getMe, updateMe };
+// ─────────────────────────────────────────────────────────────────────────────
+// @route   POST /api/auth/demo
+// @desc    Instantly log in as the demo account (no credentials needed)
+// @access  Public
+// ─────────────────────────────────────────────────────────────────────────────
+const demoLogin = async (req, res) => {
+  try {
+    const DEMO_EMAIL = 'demo@stepsbuilder.app';
+    const DEMO_PASS  = 'DemoUser@2024!';
+
+    // Find or create the demo user
+    let user = await User.findOne({ email: DEMO_EMAIL });
+
+    if (!user) {
+      user = await User.create({
+        name: 'Demo User',
+        email: DEMO_EMAIL,
+        password: DEMO_PASS,
+        onboardingCompleted: true,
+        hoursPerDay: 2,
+        checkInPreference: 'morning',
+      });
+    }
+
+    const token = generateToken(user._id);
+
+    res.status(200).json({
+      success: true,
+      message: 'Logged in as demo user.',
+      token,
+      user: user.toPublicJSON(),
+    });
+  } catch (error) {
+    console.error('Demo login error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error during demo login.',
+    });
+  }
+};
+
+module.exports = { register, login, getMe, updateMe, demoLogin };

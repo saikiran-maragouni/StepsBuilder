@@ -10,7 +10,8 @@ export default function AuthPage() {
   const [showPw, setShowPw] = useState(false);
   const [loading, setLoading] = useState(false);
   const [slowRequest, setSlowRequest] = useState(false);
-  const { login, register } = useAuth();
+  const [demoLoading, setDemoLoading] = useState(false);
+  const { login, register, demoLogin } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
 
@@ -51,6 +52,22 @@ export default function AuthPage() {
       clearTimeout(slowTimer);
       setSlowRequest(false);
       setLoading(false);
+    }
+  };
+
+  const handleDemo = async () => {
+    setDemoLoading(true);
+    const slowTimer = setTimeout(() => setSlowRequest(true), 3000);
+    try {
+      const user = await demoLogin();
+      toast.success('Welcome! Exploring as Demo User 👋');
+      navigate(user.onboardingCompleted ? '/dashboard' : '/onboarding');
+    } catch {
+      toast.error('Could not load demo. Please try again.');
+    } finally {
+      clearTimeout(slowTimer);
+      setSlowRequest(false);
+      setDemoLoading(false);
     }
   };
 
@@ -135,7 +152,52 @@ export default function AuthPage() {
           )}
         </form>
 
-        <p style={{ textAlign: 'center', marginTop: 24, fontSize: 13, color: 'var(--text-muted)' }}>
+        <div style={{ marginTop: 20, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, width: '100%' }}>
+            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+            <span style={{ fontSize: 12, color: 'var(--text-muted)', whiteSpace: 'nowrap' }}>or</span>
+            <div style={{ flex: 1, height: 1, background: 'var(--border)' }} />
+          </div>
+
+          <button
+            id="btn-demo"
+            type="button"
+            onClick={handleDemo}
+            disabled={demoLoading || loading}
+            style={{
+              width: '100%',
+              padding: '13px',
+              borderRadius: 'var(--radius-md)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              background: 'rgba(16,185,129,0.06)',
+              color: '#10b981',
+              fontSize: 14,
+              fontWeight: 600,
+              cursor: demoLoading ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: 8,
+              transition: 'all 0.2s',
+              opacity: demoLoading ? 0.7 : 1,
+            }}
+            onMouseEnter={e => { if (!demoLoading) e.currentTarget.style.background = 'rgba(16,185,129,0.12)'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'rgba(16,185,129,0.06)'; }}
+          >
+            {demoLoading
+              ? <span className="spinner" style={{ width: 16, height: 16, borderColor: 'rgba(16,185,129,0.3)', borderTopColor: '#10b981' }} />
+              : '🚀'}
+            {demoLoading ? 'Loading demo...' : 'Try Demo — No sign up needed'}
+          </button>
+
+          {slowRequest && (
+            <p style={{ fontSize: 12, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
+              ☕ First load may take ~30 seconds while our server wakes up.
+            </p>
+          )}
+        </div>
+
+        <p style={{ textAlign: 'center', marginTop: 20, fontSize: 13, color: 'var(--text-muted)' }}>
           {mode === 'login' ? "Don't have an account? " : 'Already have an account? '}
           <button onClick={() => setMode(mode === 'login' ? 'register' : 'login')}
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--indigo)', fontWeight: 600, fontSize: 13 }}>

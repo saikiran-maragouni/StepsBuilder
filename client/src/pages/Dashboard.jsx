@@ -4,6 +4,7 @@ import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import Sidebar from '../components/Sidebar';
+import { DashboardSkeleton } from '../components/Skeleton';
 import {
   CheckCircle, Clock, Target,
   BookOpen, Plus, TrendingUp, Bell,
@@ -101,7 +102,7 @@ export default function Dashboard() {
     <div className="app-layout">
       <Sidebar />
       <main className="main-content">
-        <div className="loading-screen"><div className="spinner" style={{ width: 40, height: 40 }} /></div>
+        <DashboardSkeleton />
       </main>
     </div>
   );

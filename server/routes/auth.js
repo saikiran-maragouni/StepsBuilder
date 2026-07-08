@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { register, login, getMe, updateMe } = require('../controllers/authController');
+const { register, login, getMe, updateMe, demoLogin } = require('../controllers/authController');
 const { protect } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -55,5 +55,8 @@ router.get('/me', protect, getMe);
 
 // PUT /api/auth/me  (protected)
 router.put('/me', protect, updateMe);
+
+// POST /api/auth/demo  — instant demo access, no credentials needed
+router.post('/demo', demoLogin);
 
 module.exports = router;
