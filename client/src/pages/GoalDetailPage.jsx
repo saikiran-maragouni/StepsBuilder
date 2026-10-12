@@ -259,6 +259,15 @@ export default function GoalDetailPage() {
   const [loading, setLoading] = useState(true);
   const [regenerating, setRegenerating] = useState(false);
   const [view, setView] = useState('map'); // 'timeline' | 'map'
+  const [regenStepIdx, setRegenStepIdx] = useState(0);
+
+  const ROADMAP_STEPS = [
+    'Synthesizing goal context & scope...',
+    'Architecting multi-phase milestones...',
+    'Breaking down sequential action steps...',
+    'Estimating realistic timelines & difficulty...',
+    'Finalizing visual roadmap nodes...'
+  ];
 
   const load = async () => {
     try {
@@ -278,13 +287,21 @@ export default function GoalDetailPage() {
 
   const regenerate = async () => {
     setRegenerating(true);
+    setRegenStepIdx(0);
+    const interval = setInterval(() => {
+      setRegenStepIdx((prev) => (prev + 1) % ROADMAP_STEPS.length);
+    }, 2800);
+
     try {
       const { data } = await api.patch(`/goals/${id}/roadmap/regenerate`);
       setRoadmap(data.roadmap);
       toast.success('Roadmap regenerated!');
     } catch (err) {
       toast.error(err.response?.data?.message || 'Regeneration failed.');
-    } finally { setRegenerating(false); }
+    } finally {
+      clearInterval(interval);
+      setRegenerating(false);
+    }
   };
 
   if (loading) return (
@@ -419,6 +436,59 @@ export default function GoalDetailPage() {
             </button>
           </div>
         </div>
+
+        {/* AI Regenerating Indicator Banner */}
+        {regenerating && (
+          <div
+            className="card"
+            style={{
+              padding: '16px 20px',
+              marginBottom: 20,
+              background: 'linear-gradient(135deg, rgba(16,185,129,0.12) 0%, rgba(5,150,105,0.06) 100%)',
+              border: '1px solid rgba(16,185,129,0.3)',
+              borderRadius: 'var(--radius-lg)',
+              display: 'flex',
+              alignItems: 'center',
+              gap: 16,
+              boxShadow: '0 4px 20px rgba(16,185,129,0.15)',
+              animation: 'fadeIn 0.3s ease',
+            }}
+          >
+            <div
+              style={{
+                width: 38,
+                height: 38,
+                borderRadius: 10,
+                background: 'var(--gradient)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                boxShadow: '0 0 16px rgba(16,185,129,0.5)',
+              }}
+            >
+              <RefreshCw size={18} color="white" className="spin" />
+            </div>
+
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+                <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--green)' }}>
+                  Gemini Architecting Roadmap
+                </span>
+                <span style={{ fontSize: 11, color: 'var(--text-muted)' }}>
+                  (Step {regenStepIdx + 1} of {ROADMAP_STEPS.length})
+                </span>
+              </div>
+              <div style={{ fontSize: 13, color: 'var(--text-primary)', fontWeight: 500, minHeight: 18, transition: 'all 0.3s' }}>
+                {ROADMAP_STEPS[regenStepIdx]}
+              </div>
+            </div>
+
+            <div style={{ width: 18, height: 18, flexShrink: 0 }}>
+              <div className="spinner" style={{ width: 18, height: 18, borderColor: 'rgba(16,185,129,0.3)', borderTopColor: 'var(--green)' }} />
+            </div>
+          </div>
+        )}
 
         {/* ── Content: Timeline or Visual Map ── */}
         {!roadmap?.phases?.length ? (
