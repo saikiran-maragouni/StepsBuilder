@@ -43,8 +43,8 @@ const parseGeminiJSON = (text) => {
 };
 
 // Model preference order — fall through to lighter models if primary is rate-limited
-// Note: gemini-1.5-flash is deprecated on this API key. 2.0-flash is the current free-tier equivalent.
-const MODEL_FALLBACK_CHAIN = ['gemini-2.0-flash', 'gemini-2.0-flash-lite', 'gemini-flash-latest'];
+// Updated Oct 2026: gemini-2.0-flash deprecated, replaced with gemini-3.8-flash
+const MODEL_FALLBACK_CHAIN = ['gemini-3.8-flash', 'gemini-3.8-flash-lite', 'gemini-flash-latest'];
 
 /**
  * Core helper — sends a prompt to Gemini and returns parsed JSON.
