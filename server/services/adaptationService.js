@@ -128,9 +128,11 @@ const runAdaptationForUser = async (userId) => {
 
     console.log(`🔄 Running adaptation engine for user ${userId} (${activeGoals.length} active goals)`);
 
-    // Process goals sequentially to avoid hammering the Gemini API
+    // Process goals sequentially with pacing to avoid hammering the Gemini free-tier rate limit
     for (const goal of activeGoals) {
       await analyzeGoal(goal);
+      // Small 1.2s breather between goals so background adaptation doesn't starve user requests
+      await new Promise((r) => setTimeout(r, 1200));
     }
   } catch (err) {
     console.error('runAdaptationForUser error:', err.message);

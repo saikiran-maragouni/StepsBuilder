@@ -62,32 +62,34 @@ const callGemini = async (prompt, retries = 3, modelIndex = 0) => {
       const text = result.response.text();
       return parseGeminiJSON(text);
     } catch (err) {
-      const isTransient =
-        err.status === 503 ||
-        (err.message && (
-          err.message.includes('429') ||
-          err.message.includes('503') ||
-          err.message.includes('quota') ||
-          err.message.includes('high demand') ||
-          err.message.includes('Service Unavailable')
-        ));
+      const isRateLimit = err.status === 429 || (err.message && (err.message.includes('429') || err.message.includes('quota')));
+      const isOverloaded = err.status === 503 || (err.message && (err.message.includes('503') || err.message.includes('high demand') || err.message.includes('Service Unavailable')));
+      const isTransient = isRateLimit || isOverloaded;
+      const hasFallback = modelIndex < MODEL_FALLBACK_CHAIN.length - 1;
+
+      // If rate limited (429 quota) and we have a fallback model, switch immediately without waiting!
+      if (isRateLimit && hasFallback) {
+        console.warn(`⚡ Gemini quota reached for ${modelName} — immediately trying lighter model: ${MODEL_FALLBACK_CHAIN[modelIndex + 1]}`);
+        return callGemini(prompt, retries, modelIndex + 1);
+      }
+
       const isLastAttempt = attempt === retries;
 
       if (isTransient && !isLastAttempt) {
-        // Exponential backoff: 2s, 4s, 8s
-        const waitMs = Math.pow(2, attempt) * 1000;
+        // Backoff: 1.5s, 3s
+        const waitMs = Math.pow(2, attempt - 1) * 1500;
         console.warn(`⏳ Gemini transient error (${err.status || '503/429'} on ${modelName}) — retrying in ${waitMs / 1000}s (attempt ${attempt}/${retries})`);
         await new Promise((resolve) => setTimeout(resolve, waitMs));
         continue;
       }
 
-      if (isTransient && modelIndex < MODEL_FALLBACK_CHAIN.length - 1) {
-        // Try next lighter model in the fallback chain
-        console.warn(`⏳ Gemini temporarily unavailable for ${modelName} — falling back to ${MODEL_FALLBACK_CHAIN[modelIndex + 1]}`);
+      if (isTransient && hasFallback) {
+        // All retries exhausted on current model — switch to next fallback
+        console.warn(`⏳ Gemini model ${modelName} exhausted — falling back to ${MODEL_FALLBACK_CHAIN[modelIndex + 1]}`);
         return callGemini(prompt, retries, modelIndex + 1);
       }
 
-      // Non-transient error or exhausted all retries/models — propagate
+      // Non-transient error or exhausted all retries and fallback models — propagate
       throw err;
     }
   }
